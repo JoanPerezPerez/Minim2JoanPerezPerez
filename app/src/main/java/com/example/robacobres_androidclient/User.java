@@ -2,11 +2,11 @@ package com.example.robacobres_androidclient;
 
 public class User {
     String id;
-    String username;
+    String user;
     String password;
 
     public User(String username, String password) {
-        this.username = username;
+        this.user = username;
         this.password = password;
     }
 
@@ -19,11 +19,11 @@ public class User {
     }
 
     public String getUsername() {
-        return username;
+        return user;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.user = username;
     }
 
     public String getPassword() {

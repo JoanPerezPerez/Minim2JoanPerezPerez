@@ -44,4 +44,7 @@ dependencies {
     // retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
+
+    // HttpLoggingInterceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 }

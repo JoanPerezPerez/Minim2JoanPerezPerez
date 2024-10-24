@@ -3,7 +3,8 @@ package com.example.robacobres_androidclient;
 import android.util.Log;
 
 import java.util.List;
-
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,16 +16,22 @@ public class Service {
     Servidor serv;
 
     public Service(){
+        // Es un interceptor que facilita el procés de depuració al mostrar els detalles de les peticions y respostes HTTP al logcat
+        HttpLoggingInterceptor interceptor= new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
         //RetroFit
         retrofit =
                 new Retrofit.Builder()
                         .baseUrl("http://10.0.2.2:8080/RobaCobres/") //aqui posem lo de localhost bla bla bla
                         .addConverterFactory(GsonConverterFactory.create())
+                        .client(client) //Permet fer que es vegin les peticions HTTP amb detall al logcat
                         .build();
         serv = retrofit.create(Servidor.class);
     }
 
-    public void registerUser(String _username, String _password){
+    public void registerUser(String _username, String _password, final UserCallback callback){
         User body = new User(_username,_password);
         // Make the POST request
         Call<User> call = serv.registerUser(body);
@@ -33,12 +40,15 @@ public class Service {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     User u = response.body();
-                    //POSAR CALLBACK
+                    callback.onUserCallback(u);
+                    callback.onMessage("CONGRATULATIONS, "+u.getUsername()+" YOU ARE REGISTERED");
                     // Handle success
                     Log.d("API_RESPONSE", "POST SUCCESFULL");
                 } else {
+                    callback.onMessage("YOU COULD NOT BE REGISTERED, TRY ANOTHER USERNAME");
                     // Handle failure
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+
                 }
             }
 
@@ -46,11 +56,12 @@ public class Service {
             public void onFailure(Call<User> call, Throwable t) {
                 // Handle error
                 Log.e("API_ERROR", "API call failed", t);
+                callback.onMessage("ERROR DUE TO CONNECTION");
             }
         });
     }
 
-    public void loginUser(String _username, String _password){
+    public void loginUser(String _username, String _password, final UserCallback callback){
         User body = new User(_username,_password);
         // Make the POST request
         Call<Void> call = serv.loginUser(body);
@@ -58,10 +69,11 @@ public class Service {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    //POSAR CALLBACK
+                    callback.onMessage("CONGRATULATIONS, YOU ARE IN");
                     // Handle success
                     Log.d("API_RESPONSE", "POST SUCCESFULL");
                 } else {
+                    callback.onMessage("TRY AGAIN, YOU COULD NOT BE LOGGED IN");
                     // Handle failure
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                 }
@@ -71,6 +83,7 @@ public class Service {
             public void onFailure(Call<Void> call, Throwable t) {
                 // Handle error
                 Log.e("API_ERROR", "API call failed", t);
+                callback.onMessage("ERROR DUE TO CONNECTION");
             }
         });
     }
@@ -95,7 +108,7 @@ public class Service {
             }
         });
     }
-    public void getAllItems(final ServiceCallback callback){
+    public void getAllItems(final ItemCallback callback){
         Call<List<Item>> call = serv.getItems();
 
         call.enqueue(new Callback<List<Item>>() {

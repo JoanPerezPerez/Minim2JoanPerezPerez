@@ -2,7 +2,8 @@ package com.example.robacobres_androidclient;
 
 import java.util.List;
 
-public interface ServiceCallback {
-    void onServiceCallback(List<Item> tracks);
+public interface ItemCallback {
+    void onItemCallback(List<Item> objects);
     void onError(String errorMessage);
+
 }
