@@ -18,7 +18,7 @@ public class Service {
         //RetroFit
         retrofit =
                 new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8080/dsaApp/") //aqui posem lo de localhost bla bla bla
+                        .baseUrl("http://10.0.2.2:8080/RobaCobres/") //aqui posem lo de localhost bla bla bla
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
         serv = retrofit.create(Servidor.class);

@@ -1,6 +1,7 @@
 package com.example.robacobres_androidclient;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
@@ -38,10 +39,15 @@ public class MainActivity extends AppCompatActivity {
         service=new Service();
     }
 
-    public void onClickLogin(){
+    public void onClickLogin(View v){
         String user=usernameTextComp.getText().toString().trim();
         String pass=passwordTextComp.getText().toString().trim();
         this.service.loginUser(user,pass);
+    }
+    public void onClickRegister(View v){
+        String user=usernameTextComp.getText().toString().trim();
+        String pass=passwordTextComp.getText().toString().trim();
+        this.service.registerUser(user,pass);
     }
 
     @Override
