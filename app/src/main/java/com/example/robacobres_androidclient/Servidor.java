@@ -1,5 +1,8 @@
 package com.example.robacobres_androidclient;
 
+import com.example.robacobres_androidclient.models.Item;
+import com.example.robacobres_androidclient.models.User;
+
 import java.util.List;
 
 import retrofit2.Call;

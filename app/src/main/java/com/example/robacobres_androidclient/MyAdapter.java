@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.robacobres_androidclient.models.Item;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<Item> items;
     private Context context;
@@ -20,9 +22,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView txtTrackSinger;
-        public TextView txtTrackName;
-        public TextView txtTrackId;
+        public TextView txtIdObj;
+        public TextView txtNameItem;
 
         public View layout;
 
@@ -30,9 +31,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public ViewHolder(View v) {
             super(v);
             layout = v;
-            txtTrackName = (TextView) v.findViewById(R.id.trackName);
-            txtTrackSinger = (TextView) v.findViewById(R.id.trackSinger);
-            txtTrackId = (TextView) v.findViewById(R.id.trackId);
+            txtIdObj = (TextView) v.findViewById(R.id.itemId);
+            txtNameItem = (TextView) v.findViewById(R.id.itemName);
         }
     }
 
@@ -60,12 +60,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final Item i = items.get(position);
-        //holder.txtTrackId.setText(track.id);
-        //holder.txtTrackSinger.setText(track.singer);
-        //holder.txtTrackName.setText(track.title);
+        holder.txtIdObj.setText(i.getId());
+        holder.txtNameItem.setText(i.getName());
 
         //SI VOLEM FER COSES DE ELIMINAR
-        holder.txtTrackSinger.setOnClickListener(new OnClickListener() {
+        holder.txtIdObj.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*

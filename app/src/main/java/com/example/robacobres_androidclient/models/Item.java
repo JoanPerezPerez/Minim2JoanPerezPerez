@@ -1,4 +1,4 @@
-package com.example.robacobres_androidclient;
+package com.example.robacobres_androidclient.models;
 
 public class Item {
     String id;

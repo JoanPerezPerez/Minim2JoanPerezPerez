@@ -15,7 +15,7 @@
         android:src="@drawable/ic_launcher_background" />
 
     <TextView
-        android:id="@+id/trackId"
+        android:id="@+id/itemId"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -23,34 +23,20 @@
         android:layout_toRightOf="@id/icon"
         android:ellipsize="marquee"
         android:maxLines="1"
-        android:text="Track ID"
+        android:text="Item ID"
         android:textSize="9sp" />
 
     <TextView
-        android:id="@+id/trackSinger"
+        android:id="@+id/itemName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/trackId"
+        android:layout_above="@id/itemId"
         android:layout_alignParentRight="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/icon"
         android:gravity="center_vertical"
-        android:text="Singer"
+        android:text="Name"
         android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/trackName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/trackSinger"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
-        android:gravity="center_vertical"
-        android:text="Track Name"
-        android:textStyle="bold"
-        android:textSize="13sp" />
 
 
 </RelativeLayout>

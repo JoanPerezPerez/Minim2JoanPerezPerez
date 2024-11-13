@@ -2,6 +2,11 @@ package com.example.robacobres_androidclient;
 
 import android.util.Log;
 
+import com.example.robacobres_androidclient.callbacks.ItemCallback;
+import com.example.robacobres_androidclient.callbacks.UserCallback;
+import com.example.robacobres_androidclient.models.Item;
+import com.example.robacobres_androidclient.models.User;
+
 import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -40,7 +45,7 @@ public class Service {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     User u = response.body();
-                    callback.onUserCallback(u);
+                    callback.onLoginCallback(u);
                     callback.onMessage("CONGRATULATIONS, "+u.getUsername()+" YOU ARE REGISTERED");
                     // Handle success
                     Log.d("API_RESPONSE", "POST SUCCESFULL");
@@ -70,6 +75,7 @@ public class Service {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     callback.onMessage("CONGRATULATIONS, YOU ARE IN");
+                    callback.onLoginCallback(body);
                     // Handle success
                     Log.d("API_RESPONSE", "POST SUCCESFULL");
                 } else {
@@ -115,11 +121,11 @@ public class Service {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Item> items = response.body();
-                    //callback.onTracksLoaded(items);
                     // Handle the response
+                    List<Item> items = response.body();
+                    callback.onItemCallback(items);
                     for (Item it : items) {
-                        Log.d("API_RESPONSE", "Item Name: " + it.name);
+                        Log.d("API_RESPONSE", "Item Name: " + it.getName());
                     }
                 } else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
@@ -144,7 +150,7 @@ public class Service {
                 if (response.isSuccessful() && response.body() != null) {
                     Item i = response.body();
                     // Handle the response
-                    Log.d("API_RESPONSE", "Item Name: " + i.name);
+                    Log.d("API_RESPONSE", "Item Name: " + i.getName());
                 } else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                 }
