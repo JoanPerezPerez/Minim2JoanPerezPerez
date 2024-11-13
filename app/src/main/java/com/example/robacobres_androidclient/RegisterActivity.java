@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
+import com.example.robacobres_androidclient.services.Service;
 
 public class RegisterActivity extends AppCompatActivity implements UserCallback {
     Button btnOpenUpload;

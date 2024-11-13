@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
+import com.example.robacobres_androidclient.services.Service;
 
 public class MainActivity extends AppCompatActivity implements UserCallback {
     private RecyclerView recyclerView;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
 
         // Pasar los datos del track seleccionado a la nueva actividad
         intent.putExtra("userId", _user.getId());
-        intent.putExtra("userName", _user.getUsername());
+        intent.putExtra("userName", _user.getName());
         intent.putExtra("password", _user.getPassword());
 
         // Iniciar la nueva actividad

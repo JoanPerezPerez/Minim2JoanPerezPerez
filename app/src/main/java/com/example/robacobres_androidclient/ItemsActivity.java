@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.models.Item;
+import com.example.robacobres_androidclient.services.Service;
 
 import java.util.ArrayList;
 import java.util.List;

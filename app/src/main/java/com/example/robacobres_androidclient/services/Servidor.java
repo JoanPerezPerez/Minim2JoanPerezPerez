@@ -1,4 +1,4 @@
-package com.example.robacobres_androidclient;
+package com.example.robacobres_androidclient.services;
 
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;

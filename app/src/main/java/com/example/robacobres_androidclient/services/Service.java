@@ -1,4 +1,4 @@
-package com.example.robacobres_androidclient;
+package com.example.robacobres_androidclient.services;
 
 import android.util.Log;
 
@@ -46,7 +46,7 @@ public class Service {
                 if (response.isSuccessful()) {
                     User u = response.body();
                     callback.onLoginCallback(u);
-                    callback.onMessage("CONGRATULATIONS, "+u.getUsername()+" YOU ARE REGISTERED");
+                    callback.onMessage("CONGRATULATIONS, "+u.getName()+" YOU ARE REGISTERED");
                     // Handle success
                     Log.d("API_RESPONSE", "POST SUCCESFULL");
                 } else {
