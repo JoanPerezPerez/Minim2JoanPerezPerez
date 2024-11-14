@@ -45,8 +45,12 @@ public class Service {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     User u = response.body();
-                    callback.onLoginCallback(u);
-                    callback.onMessage("CONGRATULATIONS, "+u.getName()+" YOU ARE REGISTERED");
+                    if(response.code()==201){
+                        callback.onLoginCallback(u);
+                        callback.onMessage("CONGRATULATIONS, "+u.getName()+" YOU ARE REGISTERED");
+                    } else if (response.code()==0) {
+                        //EROR POSAR EL CODI QUE TOQUI ETC
+                    }
                     // Handle success
                     Log.d("API_RESPONSE", "POST SUCCESFULL");
                 } else {
@@ -125,7 +129,7 @@ public class Service {
                     List<Item> items = response.body();
                     callback.onItemCallback(items);
                     for (Item it : items) {
-                        Log.d("API_RESPONSE", "Item Name: " + it.getName());
+                        Log.d("API_RESPONSE", "Item Name: " + it.getName() +"Item Price: "+it.getCost());
                     }
                 } else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());

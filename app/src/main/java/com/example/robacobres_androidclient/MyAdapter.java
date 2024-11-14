@@ -24,6 +24,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // each data item is just a string in this case
         public TextView txtIdObj;
         public TextView txtNameItem;
+        public TextView txtPriceItem;
 
         public View layout;
 
@@ -33,6 +34,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             layout = v;
             txtIdObj = (TextView) v.findViewById(R.id.itemId);
             txtNameItem = (TextView) v.findViewById(R.id.itemName);
+            txtPriceItem = (TextView) v.findViewById(R.id.itemPrice);
+
         }
     }
 
@@ -62,6 +65,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         final Item i = items.get(position);
         holder.txtIdObj.setText(i.getId());
         holder.txtNameItem.setText(i.getName());
+        holder.txtPriceItem.setText(String.valueOf(i.getCost()));
 
         //SI VOLEM FER COSES DE ELIMINAR
         holder.txtIdObj.setOnClickListener(new OnClickListener() {
