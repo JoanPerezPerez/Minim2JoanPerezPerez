@@ -21,6 +21,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     Button btnOpenUpload;
     EditText textUsername;
     EditText textPassword;
+    EditText textPassword2;
 
     Service serviceREST;
 
@@ -38,14 +39,28 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
         btnOpenUpload = findViewById(R.id.btn_register);
         textUsername=findViewById(R.id.usernameText);
         textPassword=findViewById(R.id.passwordText);
+        textPassword2 = findViewById(R.id.passwordText2);
 
-        serviceREST=new Service();
+        serviceREST = new Service();
     }
 
     public void onClick(View V){
-        String userName =textUsername.getText().toString().trim();
-        String pass= textPassword.getText().toString().trim();
-        serviceREST.registerUser(userName,pass,this);
+        String userName = textUsername.getText().toString().trim();
+        String pass = textPassword.getText().toString().trim();
+        String pass2 = textPassword2.getText().toString().trim();
+
+        // Validamos que el nombre de usuario no esté vacío
+        if (userName.isEmpty()) {
+            Toast.makeText(RegisterActivity.this, "El nombre de usuario no puede estar vacío", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Validamos que las contraseñas coincidan
+        if (!pass.equals(pass2)) {
+            Toast.makeText(RegisterActivity.this, "Error, las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        serviceREST.registerUser(userName, pass,  this );
         this.finish();
     }
 
