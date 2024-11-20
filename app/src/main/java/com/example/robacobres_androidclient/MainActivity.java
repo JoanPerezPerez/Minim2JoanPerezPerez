@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
     public void onLoginCallback(User _user){
         usuario=_user;
         // Crear un Intent para abrir la nueva actividad
-        Intent intent = new Intent(context, ItemsActivity.class);
+        Intent intent = new Intent(context, MultiActivity.class);
 
-        // Pasar los datos del track seleccionado a la nueva actividad
+        // Pasar los datos a la nueva actividad
         intent.putExtra("userId", _user.getId());
         intent.putExtra("userName", _user.getName());
         intent.putExtra("password", _user.getPassword());

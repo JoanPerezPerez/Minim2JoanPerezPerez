@@ -1,6 +1,8 @@
 package com.example.robacobres_androidclient;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -76,5 +78,9 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
     @Override
     public void onError(String errorMessage) {
 
+    }
+
+    public void onClickBotonRetroceder(View V){
+        finish();
     }
 }
