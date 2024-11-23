@@ -3,7 +3,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF" >
+    android:background="#FFFFFF">
 
     <ImageButton
         android:id="@+id/Button_tienda"
@@ -59,7 +59,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/button_gradient"
         android:fontFamily="fantasy"
-        android:text="Mis    personajes"
+        android:text="Mis personajes"
         android:textColor="#000000"
         android:textStyle="bold"
         android:onClick="onClickMispersonajes"/>
@@ -79,7 +79,24 @@
         android:textStyle="bold"
         android:onClick="onClickEliminarCuenta"/>
 
+    <!-- Nuevo botón de logout centrado abajo -->
+    <Button
+        android:id="@+id/Button_logout"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button_gradient_logout"
+        android:text="Logout"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:onClick="onClickLogout" />
+
 
 </RelativeLayout>
+
 
 

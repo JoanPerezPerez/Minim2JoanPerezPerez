@@ -43,7 +43,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         this.obtainedItems=new ArrayList<>();
 
         //INSTANCIA Service
-        serviceREST=new Service();
+        serviceREST=Service.getInstance();
 
 
         //RecyclerView

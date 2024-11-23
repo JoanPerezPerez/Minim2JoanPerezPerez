@@ -2,10 +2,13 @@ package com.example.robacobres_androidclient;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +41,7 @@ public class MultiActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        serviceREST=new Service();
+        serviceREST=Service.getInstance();
         btnPlay = findViewById(R.id.Button_play);
         btnMisObjetos = findViewById(R.id.Button_misobjetos);
         btnMisPersonajes = findViewById(R.id.Button_Mispersonajes);
@@ -49,6 +52,7 @@ public class MultiActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         userName = intent.getStringExtra("userName");
         password = intent.getStringExtra("password");
+
         context = MultiActivity.this;
     }
 
@@ -59,5 +63,20 @@ public class MultiActivity extends AppCompatActivity {
         intent.putExtra("userName", userName);
         intent.putExtra("password", password);
         context.startActivity(intent);
+    }
+
+    public void onClickLogout(View V){
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();// "defaultUsername" is returned if no value is found
+        editor.remove("username");
+        editor.remove("password");
+        editor.apply();
+        Log.d("Shared Preferences","Username and password deleted");
+
+        Intent intent = new Intent(context, LogInActivity.class);
+        // Iniciar la nueva actividad
+        context.startActivity(intent);
+
+        this.finish();
     }
 }

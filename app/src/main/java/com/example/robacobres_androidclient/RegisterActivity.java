@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
         textPassword=findViewById(R.id.passwordText);
         textPassword2 = findViewById(R.id.passwordText2);
 
-        serviceREST = new Service();
+        serviceREST = Service.getInstance();
     }
 
     public void onClick(View V){
@@ -61,11 +61,15 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
             return;
         }
         serviceREST.registerUser(userName, pass,  this );
+    }
+
+    @Override
+    public void onLoginOK(User user) {
         this.finish();
     }
 
     @Override
-    public void onLoginCallback(User user) {
+    public void onLoginERROR() {
 
     }
 

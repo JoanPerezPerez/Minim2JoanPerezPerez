@@ -17,95 +17,99 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Service {
-    Retrofit retrofit;
-    Servidor serv;
+    private static Service instance;
+    private Retrofit retrofit;
+    private Servidor serv;
 
-    public Service(){
+    // Private constructor to prevent instantiation from other classes
+    private Service() {
         // Es un interceptor que facilita el procés de depuració al mostrar els detalles de les peticions y respostes HTTP al logcat
-        HttpLoggingInterceptor interceptor= new HttpLoggingInterceptor();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-        //RetroFit
-        retrofit =
-                new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8080/RobaCobres/") //aqui posem lo de localhost bla bla bla
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .client(client) //Permet fer que es vegin les peticions HTTP amb detall al logcat
-                        .build();
+        // Retrofit setup
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080/RobaCobres/") // Example base URL
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client) // Shows HTTP details in logcat
+                .build();
+
         serv = retrofit.create(Servidor.class);
     }
 
-    public void registerUser(String _username, String _password, final UserCallback callback){
-        User body = new User(_username,_password);
-        // Make the POST request
+    // Public method to get the single instance of the Service class
+    public static Service getInstance() {
+        if (instance == null) {
+            synchronized (Service.class) {
+                if (instance == null) {
+                    instance = new Service(); // Create the instance if it's null
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void registerUser(String _username, String _password, final UserCallback callback) {
+        User body = new User(_username, _password);
         Call<User> call = serv.registerUser(body);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    User u = response.body();
-                    if(response.code()==201){
-                        callback.onLoginCallback(u);
-                        callback.onMessage("CONGRATULATIONS, "+u.getName()+" YOU ARE REGISTERED");
-                    } else if (response.code()==0) {
-                        //EROR POSAR EL CODI QUE TOQUI ETC
-                    }
-                    // Handle success
-                    Log.d("API_RESPONSE", "POST SUCCESFULL");
+                User u = response.body();
+                if (response.code() == 201) {
+                    callback.onLoginOK(u);
+                    callback.onMessage("CONGRATULATIONS, " + u.getName() + " YOU ARE REGISTERED");
+                } else if (response.code() == 501) {
+                    callback.onMessage("USERNAME ALREADY USED");
+                    Log.d("API_RESPONSE", "USERNAMEUSED");
                 } else {
-                    callback.onMessage("YOU COULD NOT BE REGISTERED, TRY ANOTHER USERNAME");
-                    // Handle failure
-                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
-
+                    Log.d("API_RESPONSE", "ERROR");
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                // Handle error
                 Log.e("API_ERROR", "API call failed", t);
                 callback.onMessage("ERROR DUE TO CONNECTION");
             }
         });
     }
 
-    public void loginUser(String _username, String _password, final UserCallback callback){
-        User body = new User(_username,_password);
-        // Make the POST request
+    public void loginUser(String _username, String _password, final UserCallback callback) {
+        User body = new User(_username, _password);
         Call<Void> call = serv.loginUser(body);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
+                if (response.code() == 201) {
                     callback.onMessage("CONGRATULATIONS, YOU ARE IN");
-                    callback.onLoginCallback(body);
-                    // Handle success
-                    Log.d("API_RESPONSE", "POST SUCCESFULL");
-                } else {
-                    callback.onMessage("TRY AGAIN, YOU COULD NOT BE LOGGED IN");
-                    // Handle failure
+                    callback.onLoginOK(body);
+                    Log.d("API_RESPONSE", "POST SUCCESSFUL");
+                } else if (response.code() == 501 || response.code() == 502) {
+                    callback.onMessage("USER OR PASSWORD WRONG");
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                } else {
+                    callback.onMessage("ERROR");
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                // Handle error
                 Log.e("API_ERROR", "API call failed", t);
                 callback.onMessage("ERROR DUE TO CONNECTION");
+                callback.onLoginERROR();
             }
         });
     }
-    public void deleteUser(String _id){
-        Call<Void> call = serv.deleteUser(_id);
 
+    public void deleteUser(String _id) {
+        Call<Void> call = serv.deleteUser(_id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    //CALLBACK
-                    Log.d("API_RESPONSE", "DELETE SUCCESFUL");
+                    Log.d("API_RESPONSE", "DELETE SUCCESSFUL");
                 } else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                 }
@@ -113,23 +117,21 @@ public class Service {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                // Handle the error
                 Log.e("API_ERROR", "API call failed", t);
             }
         });
     }
-    public void getAllItems(final ItemCallback callback){
-        Call<List<Item>> call = serv.getItems();
 
+    public void getAllItems(final ItemCallback callback) {
+        Call<List<Item>> call = serv.getItems();
         call.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Handle the response
                     List<Item> items = response.body();
                     callback.onItemCallback(items);
                     for (Item it : items) {
-                        Log.d("API_RESPONSE", "Item Name: " + it.getName() +"Item Price: "+it.getCost());
+                        Log.d("API_RESPONSE", "Item Name: " + it.getName() + " Item Price: " + it.getCost());
                     }
                 } else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
@@ -138,22 +140,18 @@ public class Service {
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
-                // Handle the error
                 Log.e("API_ERROR", "API call failed", t);
-                //callback.onError("ERRORR onFAilure");
             }
         });
     }
 
-    public void getItem(String _id){
+    public void getItem(String _id) {
         Call<Item> call = serv.getItem(_id);
-
         call.enqueue(new Callback<Item>() {
             @Override
             public void onResponse(Call<Item> call, Response<Item> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Item i = response.body();
-                    // Handle the response
                     Log.d("API_RESPONSE", "Item Name: " + i.getName());
                 } else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
@@ -162,9 +160,9 @@ public class Service {
 
             @Override
             public void onFailure(Call<Item> call, Throwable t) {
-                // Handle the error
                 Log.e("API_ERROR", "API call failed", t);
             }
         });
     }
 }
+

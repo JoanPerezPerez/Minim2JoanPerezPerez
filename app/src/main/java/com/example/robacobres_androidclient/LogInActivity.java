@@ -1,6 +1,7 @@
 package com.example.robacobres_androidclient;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -18,7 +19,7 @@ import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
 import com.example.robacobres_androidclient.services.Service;
 
-public class MainActivity extends AppCompatActivity implements UserCallback {
+public class LogInActivity extends AppCompatActivity implements UserCallback {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -29,11 +30,14 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
     private EditText usernameTextComp;
     private EditText passwordTextComp;
 
+    String user;
+    String pass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -44,16 +48,16 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
         passwordTextComp=findViewById(R.id.passwordText);
 
         //INSTANCIA TRACKSERVICE
-        service=new Service();
+        service=Service.getInstance();
 
         //CONTEXT (no estic segur si cal ferho aixi directament MainActivity.this)
         //crec que es equivalent pero mes comode
-        context=MainActivity.this;
+        context= LogInActivity.this;
     }
 
     public void onClickLogin(View v){
-        String user=usernameTextComp.getText().toString().trim();
-        String pass=passwordTextComp.getText().toString().trim();
+        user=usernameTextComp.getText().toString().trim();
+        pass=passwordTextComp.getText().toString().trim();
         this.service.loginUser(user,pass,this);
 
     }
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
     }
 
     @Override
-    public void onLoginCallback(User _user){
+    public void onLoginOK(User _user){
         usuario=_user;
         // Crear un Intent para abrir la nueva actividad
         Intent intent = new Intent(context, MultiActivity.class);
@@ -75,13 +79,25 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
         intent.putExtra("userName", _user.getName());
         intent.putExtra("password", _user.getPassword());
 
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", user);
+        editor.putString("password", pass);
+        editor.apply(); // Guardar cambios
+
         // Iniciar la nueva actividad
         context.startActivity(intent);
+        this.finish();
+    }
+
+    @Override
+    public void onLoginERROR() {
+
     }
 
     @Override
     public void onMessage(String message){
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(LogInActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
