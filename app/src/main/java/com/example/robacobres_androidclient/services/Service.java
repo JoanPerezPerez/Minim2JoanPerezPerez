@@ -83,7 +83,6 @@ public class Service {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 201) {
-                    callback.onMessage("CONGRATULATIONS, YOU ARE IN");
                     callback.onLoginOK(body);
                     Log.d("API_RESPONSE", "POST SUCCESSFUL");
                 } else if (response.code() == 501 || response.code() == 502) {

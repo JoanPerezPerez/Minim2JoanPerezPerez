@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="verde_pastel">#77DD77</color>
+    <color name="gold">#FFD700</color>
+    <color name="background_dark_copper">#4E3629</color>
+    <color name="title_dark_copper">#3E2C1C</color>
+
 </resources>

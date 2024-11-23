@@ -3,26 +3,41 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
-    android:background="@color/white"> <!-- Puedes ajustar el color o usar una imagen -->
+    android:gravity="center"
+    android:background="@color/white"
+    android:padding="16dp">
 
-    <!-- Logo de la aplicación -->
+
+    <TextView
+    android:id="@+id/title_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="RobaCobres"
+    android:textColor="@color/title_dark_copper"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginBottom="20dp"
+        android:letterSpacing="0.1" />
+
     <ImageView
-        android:id="@+id/splash_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_background" /> <!-- Aquí colocas tu logo -->
+    android:id="@+id/splash_logo"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:layout_marginBottom="30dp"
+    android:src="@drawable/furgo_2" />
 
-    <!-- ProgressBar (spinner) que indica que se está cargando -->
-    <ProgressBar
-        android:id="@+id/loadingSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        style="?android:attr/progressBarStyleLarge"
-        android:indeterminate="true"
-        android:visibility="gone"
-    />
+
+    <ImageView
+    android:id="@+id/hilo_cobre"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_marginTop="10dp"
+    android:src="@drawable/ic_robo_cobre_logo" />
+
 
 </LinearLayout>
+
+
+
