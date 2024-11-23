@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.ImageButton;
 
 import android.util.Log;
@@ -25,7 +27,11 @@ public class MultiActivity extends AppCompatActivity {
     Button btnMisPersonajes;
     ImageButton btnTienda;
     Button btnEliminarCuenta;
+
+    private ProgressBar progressBar;
+
     private Context context;
+
     String userId;
     String userName;
     String password;
@@ -41,12 +47,15 @@ public class MultiActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         serviceREST=Service.getInstance();
+
         btnPlay = findViewById(R.id.Button_play);
         btnMisObjetos = findViewById(R.id.Button_misobjetos);
         btnMisPersonajes = findViewById(R.id.Button_Mispersonajes);
         btnTienda = findViewById(R.id.Button_tienda);
         btnEliminarCuenta = findViewById(R.id.Button_eliminarcuenta);
+        progressBar = findViewById(R.id.progressBar);
         // Agafar les dades que li passem del usuari registrat
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
@@ -62,7 +71,7 @@ public class MultiActivity extends AppCompatActivity {
         intent.putExtra("userId", userId);
         intent.putExtra("userName", userName);
         intent.putExtra("password", password);
-        context.startActivity(intent);
+        abrirNuevaActivity(intent);
     }
 
     public void onClickLogout(View V){
@@ -78,5 +87,21 @@ public class MultiActivity extends AppCompatActivity {
         context.startActivity(intent);
 
         this.finish();
+    }
+
+    private void abrirNuevaActivity(Intent _intent) {
+        // Mostrar la ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Simular una tarea que tarda (por ejemplo, validación de login o consulta)
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Una vez que la tarea termine, ocultar la ProgressBar
+                progressBar.setVisibility(View.GONE);
+
+                startActivity(_intent);
+            }
+        }, 800); // Aquí puedes simular un retraso de 2 segundos (reemplázalo con la lógica real)
     }
 }
