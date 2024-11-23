@@ -11,5 +11,6 @@
     <color name="gold">#FFD700</color>
     <color name="background_dark_copper">#4E3629</color>
     <color name="title_dark_copper">#3E2C1C</color>
-
+    <color name="colorPrimary">#FF5733</color>
+    <color name="colorAccent">#5A5A5A</color>
 </resources>

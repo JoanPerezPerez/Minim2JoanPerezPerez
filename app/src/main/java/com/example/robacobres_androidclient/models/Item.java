@@ -4,6 +4,7 @@ public class Item {
     String id;
     String name;
     double cost;
+    String item_url;
     static int lastId;
 
 
@@ -34,6 +35,22 @@ public class Item {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getItem_url() {
+        return item_url;
+    }
+
+    public void setItem_url(String item_url) {
+        this.item_url = item_url;
+    }
+
+    public static int getLastId() {
+        return lastId;
+    }
+
+    public static void setLastId(int lastId) {
+        Item.lastId = lastId;
     }
 
     @Override

@@ -46,5 +46,10 @@ dependencies {
     implementation (libs.converter.gson)
 
     // HttpLoggingInterceptor
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation(libs.logging.interceptor)
+
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
+
+
 }

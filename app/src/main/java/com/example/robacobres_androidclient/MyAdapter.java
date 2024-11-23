@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.robacobres_androidclient.models.Item;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -25,6 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView txtIdObj;
         public TextView txtNameItem;
         public TextView txtPriceItem;
+        public ImageView icon;
 
         public View layout;
 
@@ -35,6 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             txtIdObj = (TextView) v.findViewById(R.id.itemId);
             txtNameItem = (TextView) v.findViewById(R.id.itemName);
             txtPriceItem = (TextView) v.findViewById(R.id.itemPrice);
+            icon=(ImageView) v.findViewById(R.id.icon);
 
         }
     }
@@ -85,6 +89,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                  */
             }
         });
+
+        Glide.with(holder.icon.getContext())
+                .load(i.getItem_url())
+                .into(holder.icon);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
