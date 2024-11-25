@@ -3,6 +3,7 @@ package com.example.robacobres_androidclient;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -47,12 +48,12 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
         usernameTextComp=findViewById(R.id.usernameText);
         passwordTextComp=findViewById(R.id.passwordText);
 
-        //INSTANCIA TRACKSERVICE
-        service=Service.getInstance();
-
         //CONTEXT (no estic segur si cal ferho aixi directament MainActivity.this)
         //crec que es equivalent pero mes comode
         context= LogInActivity.this;
+
+        //INSTANCIA TRACKSERVICE
+        service=Service.getInstance(this.context);
     }
 
     public void onClickLogin(View v){
@@ -78,12 +79,6 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
         intent.putExtra("userId", _user.getId());
         intent.putExtra("userName", _user.getName());
         intent.putExtra("password", _user.getPassword());
-
-        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username", user);
-        editor.putString("password", pass);
-        editor.apply(); // Guardar cambios
 
         // Iniciar la nueva actividad
         context.startActivity(intent);

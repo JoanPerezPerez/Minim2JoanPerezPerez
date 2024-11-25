@@ -1,5 +1,6 @@
 package com.example.robacobres_androidclient;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,8 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     EditText textPassword;
     EditText textPassword2;
 
+    Context context;
+
     Service serviceREST;
 
     @Override
@@ -41,7 +44,9 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
         textPassword=findViewById(R.id.passwordText);
         textPassword2 = findViewById(R.id.passwordText2);
 
-        serviceREST = Service.getInstance();
+        context=RegisterActivity.this;
+
+        serviceREST = Service.getInstance(context);
     }
 
     public void onClick(View V){

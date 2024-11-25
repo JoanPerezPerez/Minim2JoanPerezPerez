@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
 import com.example.robacobres_androidclient.services.Service;
@@ -23,11 +24,15 @@ import com.example.robacobres_androidclient.services.Service;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
-public class SplashScreenActivity extends AppCompatActivity implements UserCallback {
+import java.util.HashSet;
+
+public class SplashScreenActivity extends AppCompatActivity implements AuthCallback {
 
     private static final int SPLASH_DISPLAY_LENGTH = 3000;  // Duración de la splash screen (en milisegundos)
     private Service service;
     private ImageView hiloCobreImageView;  // Imagen del hilo de cobre
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,8 @@ public class SplashScreenActivity extends AppCompatActivity implements UserCallb
             return insets;
         });
 
-        service = Service.getInstance();
+        context=SplashScreenActivity.this;
+        service = Service.getInstance(context);
 
         hiloCobreImageView = findViewById(R.id.hilo_cobre);
 
@@ -63,44 +69,38 @@ public class SplashScreenActivity extends AppCompatActivity implements UserCallb
     }
 
     private void checkLoginStatus() {
-        SharedPreferences sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String authToken = sharedPref.getString("authToken", null);
 
-
-        String username = sharedPref.getString("username", null);
-        String password = sharedPref.getString("password", null);
-
-        if (username == null || password == null) {
+        if (authToken==null) {
+            Log.d("Shared Preferences","No Cookies stored");
             Intent intent = new Intent(SplashScreenActivity.this, LogInActivity.class);
             startActivity(intent);
             finish();
         } else {
-            this.service.loginUser(username, password, SplashScreenActivity.this);
+            this.service.getSession(this);
         }
     }
 
     @Override
-    public void onLoginOK(User _user) {
-
-        Intent intent = new Intent(SplashScreenActivity.this, MultiActivity.class);  // Reemplaza por la actividad de inicio
-
-        intent.putExtra("userId", _user.getId());
-        intent.putExtra("userName", _user.getName());
-        intent.putExtra("password", _user.getPassword());
-
+    public void onAuthorized() {
+        Log.d("COOKIE AUTH","Authorized");
+        Intent intent = new Intent(SplashScreenActivity.this, MultiActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
-    public void onLoginERROR() {
+    public void onUnauthorized() {
+        Log.d("COOKIE AUTH","Unauthorized");
+        SharedPreferences sharedPref = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("authToken");  // Elimina la cookie almacenada con la clave "authToken"
+        editor.apply();
+        Log.d("Shared Preferences","Cookies Deleted");
         Intent intent = new Intent(SplashScreenActivity.this, LogInActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public void onMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
 

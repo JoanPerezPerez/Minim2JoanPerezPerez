@@ -1,13 +1,18 @@
 package com.example.robacobres_androidclient.services;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
+import com.example.robacobres_androidclient.interceptors.AddCookiesInterceptor;
+import com.example.robacobres_androidclient.interceptors.ReceivedCookiesInterceptor;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
 
 import java.util.List;
+import java.util.HashSet;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -22,28 +27,35 @@ public class Service {
     private Servidor serv;
 
     // Private constructor to prevent instantiation from other classes
-    private Service() {
-        // Es un interceptor que facilita el procés de depuració al mostrar els detalles de les peticions y respostes HTTP al logcat
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+    private Service(Context context) {
 
-        // Retrofit setup
+        // Interceptor para loggear las peticiones HTTP (útil para depuración)
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        // Cliente OkHttp con interceptores de cookies
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))       // Interceptor para agregar cookies en las solicitudes
+                .addInterceptor(new ReceivedCookiesInterceptor(context))  // Interceptor para recibir y almacenar cookies
+                .addInterceptor(loggingInterceptor)                      // Interceptor para log
+                .build();
+
+        // Configurar Retrofit
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/RobaCobres/") // Example base URL
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client) // Shows HTTP details in logcat
+                .baseUrl("http://10.0.2.2:8080/RobaCobres/") // Base URL
+                .addConverterFactory(GsonConverterFactory.create())       // Conversor JSON
+                .client(client)                                           // Cliente OkHttp
                 .build();
 
         serv = retrofit.create(Servidor.class);
     }
 
-    // Public method to get the single instance of the Service class
-    public static Service getInstance() {
+    // Método público para obtener la única instancia del Singleton Service
+    public static Service getInstance(Context context) {
         if (instance == null) {
             synchronized (Service.class) {
                 if (instance == null) {
-                    instance = new Service(); // Create the instance if it's null
+                    instance = new Service(context); // Crear la instancia si es nula
                 }
             }
         }
@@ -163,5 +175,48 @@ public class Service {
             }
         });
     }
+
+    public void getSession(final AuthCallback callback) {
+        Call<Void> call = serv.getSession();
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code()==201){
+                    callback.onAuthorized();
+                    Log.d("API_RESPONSE", "AUTHORIZED" );
+                } else {
+                    Log.d("API_RESPONSE", "Response not successful, code: ");
+                    callback.onUnauthorized();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+    public void quitSession(final AuthCallback callback) {
+        Call<Void> call = serv.quitSession();
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code()==201){
+                    Log.d("API_RESPONSE", "201: COOKIE QUITED" );
+                    callback.onUnauthorized();
+                } else {
+                    Log.d("API_RESPONSE", "Response not successful, code: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
 }
+
 

@@ -18,9 +18,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.services.Service;
 
-public class MultiActivity extends AppCompatActivity {
+public class MultiActivity extends AppCompatActivity implements AuthCallback {
     Service serviceREST;
     Button btnPlay;
     Button btnMisObjetos;
@@ -48,7 +49,9 @@ public class MultiActivity extends AppCompatActivity {
             return insets;
         });
 
-        serviceREST=Service.getInstance();
+        context = MultiActivity.this;
+
+        serviceREST=Service.getInstance(this);
 
         btnPlay = findViewById(R.id.Button_play);
         btnMisObjetos = findViewById(R.id.Button_misobjetos);
@@ -62,46 +65,41 @@ public class MultiActivity extends AppCompatActivity {
         userName = intent.getStringExtra("userName");
         password = intent.getStringExtra("password");
 
-        context = MultiActivity.this;
     }
 
     public void onClickTienda(View V){
+        progressBar.setVisibility(View.VISIBLE);
         Intent intent = new Intent(context, ItemsActivity.class);
         // Pasar los datos a la nueva actividad
         intent.putExtra("userId", userId);
         intent.putExtra("userName", userName);
         intent.putExtra("password", password);
-        abrirNuevaActivity(intent);
+        progressBar.setVisibility(View.GONE);
+        startActivity(intent);
     }
 
     public void onClickLogout(View V){
-        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();// "defaultUsername" is returned if no value is found
-        editor.remove("username");
-        editor.remove("password");
-        editor.apply();
-        Log.d("Shared Preferences","Username and password deleted");
+        this.serviceREST.quitSession(this);
 
         Intent intent = new Intent(context, LogInActivity.class);
+
         // Iniciar la nueva actividad
         context.startActivity(intent);
 
         this.finish();
     }
 
-    private void abrirNuevaActivity(Intent _intent) {
-        // Mostrar la ProgressBar
-        progressBar.setVisibility(View.VISIBLE);
+    @Override
+    public void onAuthorized() {
 
-        // Simular una tarea que tarda (por ejemplo, validación de login o consulta)
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Una vez que la tarea termine, ocultar la ProgressBar
-                progressBar.setVisibility(View.GONE);
+    }
 
-                startActivity(_intent);
-            }
-        }, 800); // Aquí puedes simular un retraso de 2 segundos (reemplázalo con la lógica real)
+    @Override
+    public void onUnauthorized() {
+        SharedPreferences sharedPref = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("authToken");  // Elimina la cookie almacenada con la clave "authToken"
+        editor.apply();
+        Log.d("Shared Preferences","Cookies Deleted");
     }
 }

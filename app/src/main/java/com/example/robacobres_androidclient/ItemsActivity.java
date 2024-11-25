@@ -1,5 +1,6 @@
 package com.example.robacobres_androidclient;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    Context context;
 
     Service serviceREST;
     List<Item> obtainedItems;
@@ -42,8 +44,10 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         //VARIABLES MAIN
         this.obtainedItems=new ArrayList<>();
 
+        context=ItemsActivity.this;
+
         //INSTANCIA Service
-        serviceREST=Service.getInstance();
+        serviceREST=Service.getInstance(context);
 
 
         //RecyclerView

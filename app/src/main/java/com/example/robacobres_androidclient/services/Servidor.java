@@ -36,6 +36,14 @@ public interface Servidor {
     @GET("items/{id}")
     Call<Item> getItem(@Path("id") String id);
 
+    @GET("users/sessionCheck")
+    Call<Void> getSession();
+
+    @GET("users/sessionOut")
+    Call<Void> quitSession();
+
+
+
 
 
     /*
