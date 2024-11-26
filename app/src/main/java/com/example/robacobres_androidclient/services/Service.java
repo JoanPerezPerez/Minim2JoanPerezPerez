@@ -216,13 +216,24 @@ public class Service {
             }
         });
     }
+
     public void userBuys(String _username, String _idItem) {
+        // FALTEN ELS CALLBACKS PER ESCRIURE A LA PANTALLA
         Call<Void> call = serv.userBuys(_username, _idItem);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 201) {
                     Log.d("API_RESPONSE", "Item Comprado: " + _idItem);
+                }
+                else if (response.code() == 501){
+                    Log.d("API_RESPONSE", "User NOT found ");
+                }
+                else if(response.code() == 502){
+                    Log.d("API_RESPONSE", "Item NOT available");
+                }
+                else if (response.code() == 503) {
+                    Log.d("API_RESPONSE", "Not enough money");
                 } else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                 }
