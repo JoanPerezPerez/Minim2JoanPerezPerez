@@ -216,6 +216,24 @@ public class Service {
             }
         });
     }
+    public void userBuys(String _username, String _idItem) {
+        Call<Void> call = serv.userBuys(_username, _idItem);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 201) {
+                    Log.d("API_RESPONSE", "Item Comprado: " + _idItem);
+                } else {
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
 
 }
 

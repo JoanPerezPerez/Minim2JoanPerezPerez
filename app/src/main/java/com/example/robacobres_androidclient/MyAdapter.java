@@ -7,18 +7,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.robacobres_androidclient.models.Item;
+import com.example.robacobres_androidclient.services.Service;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<Item> items;
     private Context context;
-
+    private OnItemClickListener listener;
+    private Service service;
+    private String username;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -28,6 +34,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView txtNameItem;
         public TextView txtPriceItem;
         public ImageView icon;
+        public Button comprar;
+
 
         public View layout;
 
@@ -39,14 +47,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             txtNameItem = (TextView) v.findViewById(R.id.itemName);
             txtPriceItem = (TextView) v.findViewById(R.id.itemPrice);
             icon=(ImageView) v.findViewById(R.id.icon);
+            comprar = (Button) v.findViewById(R.id.Comprar);
 
         }
     }
 
-
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(Context context,List<Item> myDataset) {
+    public MyAdapter(Context context,List<Item> myDataset, OnItemClickListener listener, Service service, String username) {
         this.context = context;
+        this.listener = listener;
+        this.username = username;
+        this.service = service;
         items = myDataset;
     }
 
@@ -70,7 +81,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.txtIdObj.setText(i.getId());
         holder.txtNameItem.setText(i.getName());
         holder.txtPriceItem.setText(String.valueOf(i.getCost()));
-
+        holder.comprar.setOnClickListener(v -> {
+            service.userBuys(username, i.getId()); // Llamar al método cuando se presione el botón
+        });
         //SI VOLEM FER COSES DE ELIMINAR
         holder.txtIdObj.setOnClickListener(new OnClickListener() {
             @Override

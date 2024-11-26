@@ -36,6 +36,8 @@ public interface Servidor {
     @GET("items/{id}")
     Call<Item> getItem(@Path("id") String id);
 
+
+
     @GET("users/sessionCheck")
     Call<Void> getSession();
 
@@ -43,7 +45,8 @@ public interface Servidor {
     Call<Void> quitSession();
 
 
-
+    @POST("store/buyItem/{username}/{idItem}")
+    Call<Void> userBuys(@Path("username") String username,@Path("idItem") String idItem);
 
 
     /*

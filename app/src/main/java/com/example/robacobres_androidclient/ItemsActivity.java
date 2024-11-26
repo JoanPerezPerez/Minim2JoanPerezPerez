@@ -26,7 +26,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
     private RecyclerView.LayoutManager layoutManager;
 
     Context context;
-
+    String username;
     Service serviceREST;
     List<Item> obtainedItems;
 
@@ -49,6 +49,8 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         //INSTANCIA Service
         serviceREST=Service.getInstance(context);
 
+        this.username = getIntent().getStringExtra("userName");
+
 
         //RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -61,7 +63,17 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyAdapter(ItemsActivity.this,obtainedItems);
+        mAdapter = new MyAdapter(ItemsActivity.this,obtainedItems, position -> {
+            String selectedItem = obtainedItems.get(position).getId();
+
+            // Aquí defines la acción de "comprar"
+            //Toast.makeText(this, "Compraste: " + selectedItem, Toast.LENGTH_SHORT).show();
+
+            // Puedes agregar lógica adicional, como:
+            // - Enviar el item al carrito
+            // - Actualizar el backend
+            // - Reducir el inventario, etc.
+        }, serviceREST, username );
         recyclerView.setAdapter(mAdapter);
 
         getAllItems();
@@ -83,7 +95,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
     public void onError(String errorMessage) {
 
     }
-
     public void onClickBotonRetroceder(View V){
         finish();
     }
