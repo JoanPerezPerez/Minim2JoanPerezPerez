@@ -16,15 +16,16 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.services.Service;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<Item> items;
     private Context context;
-    private OnItemClickListener listener;
     private Service service;
     private String username;
+    private ItemCallback itemCallback;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -39,7 +40,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         public View layout;
 
-
         public ViewHolder(View v) {
             super(v);
             layout = v;
@@ -53,12 +53,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(Context context,List<Item> myDataset, OnItemClickListener listener, Service service, String username) {
+    public MyAdapter(Context context, List<Item> myDataset, String username, ItemCallback _itemCallback) {
         this.context = context;
-        this.listener = listener;
         this.username = username;
-        this.service = service;
+        this.service = Service.getInstance(context);
         items = myDataset;
+        itemCallback=_itemCallback;
     }
 
     // Create new views (invoked by the layout manager)
@@ -81,14 +81,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.txtIdObj.setText(i.getId());
         holder.txtNameItem.setText(i.getName());
         holder.txtPriceItem.setText(String.valueOf(i.getCost()));
-        holder.comprar.setOnClickListener(v -> {
-            service.userBuys(username, i.getId()); // Llamar al método cuando se presione el botón
-        });
         //SI VOLEM FER COSES DE ELIMINAR
-        holder.txtIdObj.setOnClickListener(new OnClickListener() {
+        holder.comprar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+                service.userBuys(username, i.getId(),itemCallback); // Llamar al método cuando se presione el botón
+                /* SI VOLGUESSIM FER QUE SOBRIS UNA NOVA PAG AMB INFO
                 // Crear un Intent para abrir la nueva actividad
                 Intent intent = new Intent(context, ActivityInfoSong.class);
 

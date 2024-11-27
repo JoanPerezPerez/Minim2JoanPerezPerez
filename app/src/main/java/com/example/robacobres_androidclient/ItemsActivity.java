@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,17 +64,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyAdapter(ItemsActivity.this,obtainedItems, position -> {
-            String selectedItem = obtainedItems.get(position).getId();
-
-            // Aquí defines la acción de "comprar"
-            //Toast.makeText(this, "Compraste: " + selectedItem, Toast.LENGTH_SHORT).show();
-
-            // Puedes agregar lógica adicional, como:
-            // - Enviar el item al carrito
-            // - Actualizar el backend
-            // - Reducir el inventario, etc.
-        }, serviceREST, username );
+        mAdapter = new MyAdapter(context,obtainedItems, username ,ItemsActivity.this);
         recyclerView.setAdapter(mAdapter);
 
         getAllItems();
@@ -93,8 +84,15 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
 
     @Override
     public void onError(String errorMessage) {
-
+        Toast.makeText(context,"Error: "+errorMessage,Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onPurchaseOk(String idItem) {
+        Toast.makeText(context,"Objeto "+idItem+" comprado!",Toast.LENGTH_SHORT).show();
+        //FALTARIA QUE SACTUALITZES I EL ITEM COMPRAT NO SORTIS MES!
+    }
+
     public void onClickBotonRetroceder(View V){
         finish();
     }

@@ -45,8 +45,8 @@ public interface Servidor {
     Call<Void> quitSession();
 
 
-    @POST("store/buyItem/{username}/{idItem}")
-    Call<Void> userBuys(@Path("username") String username,@Path("idItem") String idItem);
+    @POST("store/buyItem/{idItem}")
+    Call<List<Item>> userBuys(@Path("idItem") String idItem);
 
 
     /*

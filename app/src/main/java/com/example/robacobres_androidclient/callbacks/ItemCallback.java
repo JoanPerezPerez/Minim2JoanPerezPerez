@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ItemCallback {
     void onItemCallback(List<Item> objects);
+    void onPurchaseOk(String idItem);
     void onError(String errorMessage);
 
 }

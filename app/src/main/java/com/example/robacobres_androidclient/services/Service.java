@@ -217,14 +217,15 @@ public class Service {
         });
     }
 
-    public void userBuys(String _username, String _idItem) {
+    public void userBuys(String _username, String _idItem, final ItemCallback callback) {
         // FALTEN ELS CALLBACKS PER ESCRIURE A LA PANTALLA
-        Call<Void> call = serv.userBuys(_username, _idItem);
-        call.enqueue(new Callback<Void>() {
+        Call<List<Item>> call = serv.userBuys(_idItem);
+        call.enqueue(new Callback<List<Item>>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 if (response.code() == 201) {
                     Log.d("API_RESPONSE", "Item Comprado: " + _idItem);
+                    callback.onPurchaseOk(_idItem);
                 }
                 else if (response.code() == 501){
                     Log.d("API_RESPONSE", "User NOT found ");
@@ -234,13 +235,14 @@ public class Service {
                 }
                 else if (response.code() == 503) {
                     Log.d("API_RESPONSE", "Not enough money");
+                    callback.onError("Ahorra un poco fuckin pobre!");
                 } else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<List<Item>> call, Throwable t) {
                 Log.e("API_ERROR", "API call failed", t);
             }
         });
