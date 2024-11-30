@@ -4,17 +4,24 @@ public class User {
     String id;
     String name;
     String password;
+    String correo;
     double money;
+    double cobre;
     static int lastId;
 
-    public User(String user, String password) {
-        this(null, user, password);
+    public User(String user, String password, String mail) {
+        this(null, user, password, mail);
     }
 
-    public User(String id, String user, String password) {
+    public User(String user, String password) {
+        this(null,user, password,null);
+    }
+
+    public User(String id, String user, String password, String mail) {
         this.setId(id);
         this.setName(user);
         this.setPassword(password);
+        this.setCorreo(mail);
     }
 
     public String getId() {
@@ -45,6 +52,22 @@ public class User {
     }
     public void setMoney(double money) {
         this.money = money;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public double getCobre() {
+        return cobre;
+    }
+
+    public void setCobre(double cobre) {
+        this.cobre = cobre;
     }
 
     @Override

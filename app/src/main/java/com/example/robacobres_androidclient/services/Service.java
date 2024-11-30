@@ -8,6 +8,7 @@ import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.interceptors.AddCookiesInterceptor;
 import com.example.robacobres_androidclient.interceptors.ReceivedCookiesInterceptor;
+import com.example.robacobres_androidclient.models.ChangePassword;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
 
@@ -63,18 +64,18 @@ public class Service {
         return instance;
     }
 
-    public void registerUser(String _username, String _password, final UserCallback callback) {
-        User body = new User(_username, _password);
+    public void registerUser(String _username, String _password, String _mail, final UserCallback callback) {
+        User body = new User(_username, _password, _mail);
         Call<User> call = serv.registerUser(body);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User u = response.body();
                 if (response.code() == 201) {
-                    callback.onLoginOK(u);
+                    callback.onCorrectProcess();
                     callback.onMessage("CONGRATULATIONS, " + u.getName() + " YOU ARE REGISTERED");
                 } else if (response.code() == 501) {
-                    callback.onMessage("USERNAME ALREADY USED");
+                    callback.onMessage("USERNAME OR EMAIL ALREADY USED");
                     Log.d("API_RESPONSE", "USERNAMEUSED");
                 } else {
                     Log.d("API_RESPONSE", "ERROR");
@@ -115,18 +116,72 @@ public class Service {
         });
     }
 
-    public void deleteUser(String _id) {
-        Call<Void> call = serv.deleteUser(_id);
+    public void deleteUser(final UserCallback callback, final AuthCallback callback1) {
+        Call<Void> call = serv.deleteUser();
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Log.d("API_RESPONSE", "DELETE SUCCESSFUL");
+                    callback.onDeleteUser();
+                    callback1.onUnauthorized();
                 } else {
+                    callback.onMessage("No se ha podido borrar la cuenta");
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                 }
             }
 
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+    public void RecoverPassword(String user, final UserCallback userCallback){
+        Call<Void> call = serv.RecoverPassword(user);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 201) {
+                    userCallback.onMessage("CHECK YOUR MAIL");
+                    userCallback.onCorrectProcess();
+                    Log.d("API_RESPONSE", "POST SUCCESSFUL");
+                } else if (response.code() == 500) {
+                    userCallback.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }else if (response.code() == 501) {
+                        userCallback.onMessage("USER DOES NOT EXIST");
+                        Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                } else {
+                    userCallback.onMessage("ERROR SENDING MAIL");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+    public void UserChangePassword(ChangePassword passwords, final UserCallback userCallback){
+        Call<Void> call = serv.UserChangePassword(passwords);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 201) {
+                    userCallback.onMessage("PASSWORD CHANGED");
+                    userCallback.onCorrectProcess();
+                    Log.d("API_RESPONSE", "PUT SUCCESSFUL");
+                } else if (response.code() == 500) {
+                    userCallback.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                } else {
+                    userCallback.onMessage("ACTUAL PASSWORD INCORRECT");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.e("API_ERROR", "API call failed", t);

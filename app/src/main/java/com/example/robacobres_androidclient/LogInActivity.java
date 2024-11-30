@@ -69,6 +69,14 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
         context.startActivity(intent);
     }
 
+    public void onClickRecovery(View v){
+        // Crear un Intent para abrir la nueva actividad
+        Intent intent = new Intent(context, PasswordRecovery.class);
+        // Iniciar la nueva actividad
+        context.startActivity(intent);
+    }
+
+
     @Override
     public void onLoginOK(User _user){
         usuario=_user;
@@ -99,5 +107,13 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
     protected void onResume(){
         super.onResume();
         //getAllTracks();
+    }
+
+    @Override
+    public void onDeleteUser() {}
+
+    @Override
+    public void onCorrectProcess() {
+        this.finish();
     }
 }

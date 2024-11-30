@@ -1,5 +1,6 @@
 package com.example.robacobres_androidclient.services;
 
+import com.example.robacobres_androidclient.models.ChangePassword;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
 
@@ -10,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface Servidor {
@@ -23,9 +25,16 @@ public interface Servidor {
     Call<Void> loginUser(@Body User user);
 
     //delete user
-    @DELETE("users/{id}")
-    Call<Void> deleteUser(@Path("id") String id);
+    @DELETE("users/deleteUser")
+    Call<Void> deleteUser();
 
+    //recover password user
+    @GET("users/RecoverPassword/{UserName}")
+    Call<Void> RecoverPassword(@Path("UserName") String username);
+
+    //change password user
+    @PUT("users/ChangePassword")
+    Call<Void> UserChangePassword(@Body ChangePassword passwords);
 
     //SERVICE ITEMS
     //get all items

@@ -28,16 +28,16 @@
         android:layout_marginEnd="20dp"
         android:background="@android:color/transparent"
         android:contentDescription="Ir a la tienda"
-        android:src="@drawable/cesta_compra"
+        android:src="@drawable/shop"
         android:onClick="onClickTienda"/>
 
     <Button
         android:id="@+id/Button_misobjetos"
-        android:layout_width="134dp"
-        android:layout_height="134dp"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
         android:layout_below="@id/Button_tienda"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="60dp"
         android:background="@drawable/button_gradient"
         android:text="Mis objetos"
@@ -48,11 +48,11 @@
 
     <Button
         android:id="@+id/Button_play"
-        android:layout_width="134dp"
-        android:layout_height="134dp"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
         android:layout_below="@id/Button_tienda"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/button_gradient"
         android:text="Play"
         android:textColor="#000000"
@@ -62,8 +62,8 @@
 
     <Button
         android:id="@+id/Button_Mispersonajes"
-        android:layout_width="134dp"
-        android:layout_height="134dp"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
         android:layout_below="@id/Button_play"
         android:layout_marginStart="60dp"
         android:layout_marginTop="50dp"
@@ -75,10 +75,39 @@
         android:onClick="onClickMispersonajes"/>
 
     <Button
-        android:id="@+id/Button_eliminarcuenta"
-        android:layout_width="134dp"
-        android:layout_height="134dp"
+        android:id="@+id/Button_VenderCobre"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
         android:layout_below="@id/Button_misobjetos"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="60dp"
+        android:layout_alignParentEnd="true"
+        android:text="Vender Cobre"
+        android:textColor="#000000"
+        android:background="@drawable/button_gradient"
+        android:fontFamily="fantasy"
+        android:textStyle="bold"
+        android:onClick="onClickVenderCobre"/>
+
+    <Button
+        android:id="@+id/Button_ChangePassword"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:layout_below="@id/Button_Mispersonajes"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_gradient"
+        android:fontFamily="fantasy"
+        android:text="Cambiar Contraseña"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:onClick="onClickChangePassword"/>
+
+    <Button
+        android:id="@+id/Button_eliminarcuenta"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:layout_below="@id/Button_VenderCobre"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="60dp"
         android:layout_alignParentEnd="true"

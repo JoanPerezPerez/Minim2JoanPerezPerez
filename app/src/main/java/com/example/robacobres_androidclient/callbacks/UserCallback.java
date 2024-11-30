@@ -6,5 +6,7 @@ public interface UserCallback {
     void onLoginOK(User user);
     void onLoginERROR();
     void onMessage(String message);
+    void onDeleteUser();
+    void onCorrectProcess();
 ;
 }

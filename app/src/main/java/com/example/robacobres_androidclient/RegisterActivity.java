@@ -21,6 +21,7 @@ import com.example.robacobres_androidclient.services.Service;
 public class RegisterActivity extends AppCompatActivity implements UserCallback {
     Button btnOpenUpload;
     EditText textUsername;
+    EditText textMail;
     EditText textPassword;
     EditText textPassword2;
 
@@ -41,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
         btnOpenUpload = findViewById(R.id.btn_register);
         textUsername=findViewById(R.id.usernameText);
+        textMail = findViewById(R.id.correoText);
         textPassword=findViewById(R.id.passwordText);
         textPassword2 = findViewById(R.id.passwordText2);
 
@@ -49,14 +51,19 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
         serviceREST = Service.getInstance(context);
     }
 
+    public void onClickBotonRetroceder(View V){
+        finish();
+    }
+
     public void onClick(View V){
         String userName = textUsername.getText().toString().trim();
+        String correo = textMail.getText().toString().trim();
         String pass = textPassword.getText().toString().trim();
         String pass2 = textPassword2.getText().toString().trim();
 
         // Validamos que el nombre de usuario no esté vacío
-        if (userName.isEmpty()) {
-            Toast.makeText(RegisterActivity.this, "El nombre de usuario no puede estar vacío", Toast.LENGTH_SHORT).show();
+        if (userName.isEmpty()||correo.isEmpty()) {
+            Toast.makeText(RegisterActivity.this, "Ni el nombre de usuario ni el correo pueden estar vacios", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -65,18 +72,14 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
             Toast.makeText(RegisterActivity.this, "Error, las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
             return;
         }
-        serviceREST.registerUser(userName, pass,  this );
+        serviceREST.registerUser(userName, pass, correo,this );
     }
 
     @Override
-    public void onLoginOK(User user) {
-        this.finish();
-    }
+    public void onLoginOK(User user) {}
 
     @Override
-    public void onLoginERROR() {
-
-    }
+    public void onLoginERROR() {}
 
     @Override
     public void onMessage(String message) {
@@ -88,6 +91,10 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
         super.onDestroy();
         Log.d("SecondaryActivity", "Activity destroyed");
     }
+    @Override
+    public void onDeleteUser() {}
 
+    @Override
+    public void onCorrectProcess() {this.finish();}
 
 }
