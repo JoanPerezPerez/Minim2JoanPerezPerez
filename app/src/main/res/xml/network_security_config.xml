@@ -3,4 +3,8 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">10.0.2.2</domain>
     </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Especifica el dominio o dirección IP que debe permitir tráfico en texto claro -->
+        <domain includeSubdomains="true">147.83.7.204</domain> <!-- Sustituye con tu IP o dominio -->
+    </domain-config>
 </network-security-config>
