@@ -212,6 +212,39 @@ public class Service {
         });
     }
 
+    public void getItemssUserCanBuy(final ItemCallback callback) {
+        Call<List<Item>> call = serv.getItemssUserCanBuy();
+        call.enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                if (response.code() == 201) {
+                    List<Item> items = response.body();
+                    callback.onItemCallback(items);
+                    for (Item it : items) {
+                        Log.d("API_RESPONSE", "Item Name: " + it.getName() + " Item Price: " + it.getCost());
+                    }
+                }
+                else if (response.code() == 500){
+                    Log.d("API_RESPONSE", "ERROR ");
+                }
+
+                else if (response.code() == 505) {
+                    Log.d("API_RESPONSE", "Not more items to buy");
+                    callback.onError("Has comprado todos los items de la tienda!");
+
+                }
+                else {
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
     public void getItem(String _id) {
         Call<Item> call = serv.getItem(_id);
         call.enqueue(new Callback<Item>() {
@@ -274,7 +307,6 @@ public class Service {
     }
 
     public void userBuys(String _username, String _idItem, final ItemCallback callback) {
-        // FALTEN ELS CALLBACKS PER ESCRIURE A LA PANTALLA
         Call<List<Item>> call = serv.userBuys(_idItem);
         call.enqueue(new Callback<List<Item>>() {
             @Override
@@ -295,7 +327,13 @@ public class Service {
                 else if (response.code() == 503) {
                     Log.d("API_RESPONSE", "Not enough money");
                     callback.onError("Ahorra un poco fuckin pobre!");
-                } else {
+                }
+                else if (response.code() == 505) {
+                    Log.d("API_RESPONSE", "Not more items to buy");
+                    callback.onError("Has comprado todos los items de la tienda!");
+
+                }
+                else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                 }
             }

@@ -57,6 +57,9 @@ public interface Servidor {
     @POST("store/buyItem/{idItem}")
     Call<List<Item>> userBuys(@Path("idItem") String idItem);
 
+    @GET("store/ItemsUserCanBuy")
+    Call<List<Item>> getItemssUserCanBuy();
+
 
     /*
     //DELETE

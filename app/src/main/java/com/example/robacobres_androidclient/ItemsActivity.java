@@ -1,7 +1,6 @@
 package com.example.robacobres_androidclient;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -70,11 +69,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         recyclerView.setAdapter(mAdapter);
         progressBar = findViewById(R.id.progressBar);
 
-        getAllItems();
+        getAllItemsUserCanBuy();
     }
 
-    public void getAllItems(){
-        serviceREST.getAllItems(this);
+    public void getAllItemsUserCanBuy(){
+        progressBar.setVisibility(View.VISIBLE);
+        serviceREST.getItemssUserCanBuy(this);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
