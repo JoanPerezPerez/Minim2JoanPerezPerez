@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -30,6 +31,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
     String username;
     Service serviceREST;
     List<Item> obtainedItems;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
 
         mAdapter = new MyAdapter(context,obtainedItems, username ,ItemsActivity.this);
         recyclerView.setAdapter(mAdapter);
+        progressBar = findViewById(R.id.progressBar);
 
         getAllItems();
     }
@@ -76,10 +79,12 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
 
     @Override
     public void onItemCallback(List<Item> objects) {
-        // Actualizar la lista de tracks y notificar al adapter
+        progressBar.setVisibility(View.VISIBLE);
+        // Actualizar la lista de items y notificar al adapter
         obtainedItems.clear();
         obtainedItems.addAll(objects);
         mAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -90,7 +95,6 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
     @Override
     public void onPurchaseOk(String idItem) {
         Toast.makeText(context,"Objeto "+idItem+" comprado!",Toast.LENGTH_SHORT).show();
-        //FALTARIA QUE SACTUALITZES I EL ITEM COMPRAT NO SORTIS MES!
     }
 
     public void onClickBotonRetroceder(View V){

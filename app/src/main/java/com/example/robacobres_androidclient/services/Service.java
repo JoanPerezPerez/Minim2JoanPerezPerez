@@ -282,6 +282,9 @@ public class Service {
                 if (response.code() == 201) {
                     Log.d("API_RESPONSE", "Item Comprado: " + _idItem);
                     callback.onPurchaseOk(_idItem);
+                    //Actualitza la llista amb els objectes que no te comprats
+                    List<Item> itemsnotbought = response.body();
+                    callback.onItemCallback(itemsnotbought);
                 }
                 else if (response.code() == 501){
                     Log.d("API_RESPONSE", "User NOT found ");
