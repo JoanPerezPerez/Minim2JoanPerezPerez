@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.content.Context;
 
@@ -31,6 +32,8 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
     private EditText usernameTextComp;
     private EditText passwordTextComp;
 
+    private ProgressBar progressBar;
+
     String user;
     String pass;
 
@@ -48,6 +51,8 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
         usernameTextComp=findViewById(R.id.usernameText);
         passwordTextComp=findViewById(R.id.passwordText);
 
+        progressBar = findViewById(R.id.progressBar);
+
         //CONTEXT (no estic segur si cal ferho aixi directament MainActivity.this)
         //crec que es equivalent pero mes comode
         context= LogInActivity.this;
@@ -57,6 +62,7 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
     }
 
     public void onClickLogin(View v){
+        progressBar.setVisibility(View.VISIBLE);
         user=usernameTextComp.getText().toString().trim();
         pass=passwordTextComp.getText().toString().trim();
         this.service.loginUser(user,pass,this);
@@ -88,6 +94,7 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
         intent.putExtra("userName", _user.getName());
         intent.putExtra("password", _user.getPassword());
 
+        progressBar.setVisibility(View.GONE);
         // Iniciar la nueva actividad
         context.startActivity(intent);
         this.finish();
@@ -95,11 +102,12 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onLoginERROR() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onMessage(String message){
+        progressBar.setVisibility(View.GONE);
         Toast.makeText(LogInActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 

@@ -41,6 +41,9 @@ public interface Servidor {
     @GET("items")
     Call<List<Item>> getItems();
 
+    @GET("store/myItems")
+    Call<List<Item>> getMyItems();
+
     //get a specific item
     @GET("items/{id}")
     Call<Item> getItem(@Path("id") String id);

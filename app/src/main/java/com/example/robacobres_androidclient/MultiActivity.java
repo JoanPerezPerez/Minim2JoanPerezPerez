@@ -127,6 +127,23 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         context.startActivity(intent);
     }
 
+    public void onClickMyItems(View V){
+        Intent intent = new Intent(context, MyItemsActivity.class);
+        context.startActivity(intent);
+    }
+
+    public void onClickMispersonajes(View V){
+
+    }
+
+    public void onClickVenderCobre(View V){
+
+    }
+
+    public void onClickPlay(View V){
+
+    }
+
     @Override
     public void onDeleteUser(){
         Intent intent = new Intent(context, LogInActivity.class);

@@ -40,11 +40,11 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="60dp"
         android:background="@drawable/button_gradient"
+        android:fontFamily="fantasy"
+        android:onClick="onClickMyItems"
         android:text="Mis objetos"
         android:textColor="#000000"
-        android:fontFamily="fantasy"
-        android:textStyle="bold"
-        android:onClick="onClickMisObjetos"/>
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/Button_play"

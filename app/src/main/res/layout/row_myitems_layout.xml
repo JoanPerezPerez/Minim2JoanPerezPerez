@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:background="@drawable/item_background" > <!-- Fondo para cada item -->
+
+    <!-- Icono de la imagen redondeada -->
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="12dp"
+        android:contentDescription="Item Icon"
+        android:src="@drawable/ic_launcher_background"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circular_background" /> <!-- Fondo circular para la imagen -->
+
+    <!-- Nombre del item -->
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/icon"
+        android:layout_alignParentTop="true"
+        android:text="Item Name"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:gravity="start" />
+
+    <!-- Precio del item -->
+    <TextView
+        android:id="@+id/itemPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/icon"
+        android:layout_below="@id/itemName"
+        android:text="Item Price"
+        android:textSize="14sp"
+        android:textColor="#FF6347"
+        android:layout_marginTop="4dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:gravity="start" />
+
+    <!-- Item ID -->
+    <TextView
+        android:id="@+id/itemId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/icon"
+        android:layout_below="@id/itemPrice"
+        android:text="Item ID"
+        android:textSize="12sp"
+        android:textColor="#A9A9A9"
+        android:layout_marginTop="4dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:gravity="start" />
+</RelativeLayout>

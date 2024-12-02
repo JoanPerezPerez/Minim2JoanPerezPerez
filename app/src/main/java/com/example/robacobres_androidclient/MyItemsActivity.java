@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.robacobres_androidclient.adapters.MyAdapter;
+import com.example.robacobres_androidclient.adapters.MyItemsAdapter;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.services.Service;
@@ -22,22 +22,23 @@ import com.example.robacobres_androidclient.services.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsActivity extends AppCompatActivity implements ItemCallback {
+public class MyItemsActivity extends AppCompatActivity implements ItemCallback {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
     Context context;
-    String username;
     Service serviceREST;
     List<Item> obtainedItems;
+
     private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_items);
+        setContentView(R.layout.activity_my_items);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -47,13 +48,10 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         //VARIABLES MAIN
         this.obtainedItems=new ArrayList<>();
 
-        context=ItemsActivity.this;
+        context=MyItemsActivity.this;
 
         //INSTANCIA Service
         serviceREST=Service.getInstance(context);
-
-        this.username = getIntent().getStringExtra("userName");
-
 
         //RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -66,16 +64,22 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyAdapter(context,obtainedItems, username ,ItemsActivity.this);
+        mAdapter = new MyItemsAdapter(context, obtainedItems);
         recyclerView.setAdapter(mAdapter);
         progressBar = findViewById(R.id.progressBar);
 
-        getAllItemsUserCanBuy();
+        getMyItems();
     }
 
-    public void getAllItemsUserCanBuy(){
+
+    public void getMyItems(){
         progressBar.setVisibility(View.VISIBLE);
-        serviceREST.getItemssUserCanBuy(this);
+        serviceREST.getMyItems(this);
+    }
+
+    @Override
+    public void onPurchaseOk(String idItem) {
+
     }
 
     @Override
@@ -85,17 +89,13 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         obtainedItems.addAll(objects);
         mAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onError(String errorMessage) {
         progressBar.setVisibility(View.GONE);
         Toast.makeText(context,"Error: "+errorMessage,Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onPurchaseOk(String idItem) {
-        Toast.makeText(context,"Objeto "+idItem+" comprado!",Toast.LENGTH_SHORT).show();
     }
 
     public void onClickBotonRetroceder(View V){

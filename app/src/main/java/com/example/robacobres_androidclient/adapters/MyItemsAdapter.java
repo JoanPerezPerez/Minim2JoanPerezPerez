@@ -1,31 +1,25 @@
-package com.example.robacobres_androidclient;
-
-import java.util.List;
+package com.example.robacobres_androidclient.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.robacobres_androidclient.callbacks.ItemCallback;
+import com.example.robacobres_androidclient.R;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.services.Service;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+import java.util.List;
+
+public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.ViewHolder> {
     private List<Item> items;
     private Context context;
     private Service service;
-    private String username;
-    private ItemCallback itemCallback;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -35,7 +29,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView txtNameItem;
         public TextView txtPriceItem;
         public ImageView icon;
-        public Button comprar;
 
 
         public View layout;
@@ -47,59 +40,36 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             txtNameItem = (TextView) v.findViewById(R.id.itemName);
             txtPriceItem = (TextView) v.findViewById(R.id.itemPrice);
             icon=(ImageView) v.findViewById(R.id.icon);
-            comprar = (Button) v.findViewById(R.id.Comprar);
-
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(Context context, List<Item> myDataset, String username, ItemCallback _itemCallback) {
+    public MyItemsAdapter(Context context, List<Item> myDataset) {
         this.context = context;
-        this.username = username;
         this.service = Service.getInstance(context);
         items = myDataset;
-        itemCallback=_itemCallback;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyItemsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.row_layout, parent, false);
+        View v = inflater.inflate(R.layout.row_myitems_layout, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
+        MyItemsAdapter.ViewHolder vh = new MyItemsAdapter.ViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(MyItemsAdapter.ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final Item i = items.get(position);
         holder.txtIdObj.setText(i.getId());
         holder.txtNameItem.setText(i.getName());
         holder.txtPriceItem.setText(String.valueOf(i.getCost()));
-        //SI VOLEM FER COSES DE ELIMINAR
-        holder.comprar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                service.userBuys(username, i.getId(),itemCallback); // Llamar al método cuando se presione el botón
-                /* SI VOLGUESSIM FER QUE SOBRIS UNA NOVA PAG AMB INFO
-                // Crear un Intent para abrir la nueva actividad
-                Intent intent = new Intent(context, ActivityInfoSong.class);
-
-                // Pasar los datos del track seleccionado a la nueva actividad
-                intent.putExtra("trackId", track.id);
-                intent.putExtra("trackSinger", track.singer);
-                intent.putExtra("trackName", track.title);
-
-                // Iniciar la nueva actividad
-                context.startActivity(intent);
-                 */
-            }
-        });
 
         Glide.with(holder.icon.getContext())
                 .load(i.getItem_url())
@@ -111,5 +81,4 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public int getItemCount() {
         return items.size();
     }
-
 }

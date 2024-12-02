@@ -13,7 +13,7 @@ import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
 
 import java.util.List;
-import java.util.HashSet;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -226,6 +226,7 @@ public class Service {
                 }
                 else if (response.code() == 500){
                     Log.d("API_RESPONSE", "ERROR ");
+                    callback.onError("Error");
                 }
 
                 else if (response.code() == 505) {
@@ -235,12 +236,50 @@ public class Service {
                 }
                 else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                    callback.onError("Error "+response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
                 Log.e("API_ERROR", "API call failed", t);
+                callback.onError("ERROR WITH CONNECTION");
+            }
+        });
+    }
+
+    public void getMyItems(final ItemCallback callback) {
+        Call<List<Item>> call = serv.getMyItems();
+        call.enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                if (response.code() == 201) {
+                    List<Item> items = response.body();
+                    callback.onItemCallback(items);
+                    for (Item it : items) {
+                        Log.d("API_RESPONSE", "Item Name: " + it.getName());
+                    }
+                }
+                else if (response.code() == 501){
+                    Log.d("API_RESPONSE", "ERROR USER NOT FOUND ");
+                    callback.onError("Error User Not Found");
+                }
+
+                else if (response.code() == 502) {
+                    Log.d("API_RESPONSE", "No Items");
+                    callback.onError("No items");
+
+                }
+                else {
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                    callback.onError("Error "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+                callback.onError("ERROR WITH CONNECTION");
             }
         });
     }
