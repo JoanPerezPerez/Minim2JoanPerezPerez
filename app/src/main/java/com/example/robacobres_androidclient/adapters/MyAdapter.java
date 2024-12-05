@@ -19,12 +19,15 @@ import com.example.robacobres_androidclient.R;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.services.Service;
+import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<Item> items;
     private Context context;
     private Service service;
+    private ServiceBBDD serviceBBDD;
     private String username;
+    private boolean isFromDataBase;
     private ItemCallback itemCallback;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -53,12 +56,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(Context context, List<Item> myDataset, String username, ItemCallback _itemCallback) {
+    public MyAdapter(Context context, List<Item> myDataset, String username, ItemCallback _itemCallback, boolean isFromDataBase) {
         this.context = context;
         this.username = username;
         this.service = Service.getInstance(context);
+        this.serviceBBDD = ServiceBBDD.getInstance(context);
         items = myDataset;
         itemCallback=_itemCallback;
+        this.isFromDataBase = isFromDataBase;
     }
 
     // Create new views (invoked by the layout manager)
@@ -85,7 +90,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.comprar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                service.userBuys(username, i.getId(),itemCallback); // Llamar al método cuando se presione el botón
+                if(isFromDataBase){
+                    serviceBBDD.userBuys(username, i.getName(),itemCallback); // Llamar al método cuando se presione el botón
+                }
+                else {
+                    service.userBuys(username, i.getName(),itemCallback); // Llamar al método cuando se presione el botón
+                }
                 /* SI VOLGUESSIM FER QUE SOBRIS UNA NOVA PAG AMB INFO
                 // Crear un Intent para abrir la nueva actividad
                 Intent intent = new Intent(context, ActivityInfoSong.class);

@@ -14,54 +14,52 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface Servidor {
+public interface ServidorBBDD {
     //SERVICE USERS
     //register user
-    @POST("users/register")
+    @POST("usersBBDD/register") //OK
     Call<User> registerUser(@Body User user);
 
     //login user
-    @POST("users/login")
+    @POST("usersBBDD/login") //OK
     Call<Void> loginUser(@Body User user);
 
     //delete user
-    @DELETE("users/deleteUser")
+    @DELETE("usersBBDD/deleteUser") //OK
     Call<Void> deleteUser();
 
     //recover password user
-    @GET("users/RecoverPassword/{UserName}")
+    @GET("usersBBDD/RecoverPassword/{UserName}")
     Call<Void> RecoverPassword(@Path("UserName") String username);
 
     //change password user
-    @PUT("users/ChangePassword")
+    @PUT("usersBBDD/ChangePassword")
     Call<Void> UserChangePassword(@Body ChangePassword passwords);
 
     //SERVICE ITEMS
     //get all items
-    @GET("items")
+    @GET("itemsBBDD")
     Call<List<Item>> getItems();
 
-    @GET("store/myItems")
-    Call<List<Item>> getMyItems();
+    @GET("storeBBDD/Items/{NameUser}")
+    Call<List<Item>> getMyItems(@Path("NameUser") String NameUser);
 
     //get a specific item
-    @GET("items/{id}")
-    Call<Item> getItem(@Path("id") String id);
+    @GET("itemsBBDD/{ItemName}") //ARREGLAR
+    Call<Item> getItem(@Path("ItemName") String ItemName);
 
-
-
-    @GET("users/sessionCheck")
+    @GET("usersBBDD/sessionCheck")
     Call<Void> getSession();
 
-    @GET("users/sessionOut")
+    @GET("usersBBDD/sessionOut")
     Call<Void> quitSession();
 
 
-    @POST("store/buyItem/{itemName}")
+    @POST("storeBBDD/buyItem/{itemName}")
     Call<List<Item>> userBuys(@Path("itemName") String itemName);
 
-    @GET("store/ItemsUserCanBuy")
-    Call<List<Item>> getItemssUserCanBuy();
+    @GET("storeBBDD/ItemsUserCanBuy/{NameUser}") //ARREGLAR
+    Call<List<Item>> getItemssUserCanBuy(@Path("NameUser") String NameUser);
 
 
     /*

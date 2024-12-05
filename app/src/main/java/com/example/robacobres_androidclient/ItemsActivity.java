@@ -18,6 +18,7 @@ import com.example.robacobres_androidclient.adapters.MyAdapter;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.services.Service;
+import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,9 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
 
     Context context;
     String username;
+    boolean isFromDatabase;
     Service serviceREST;
+    ServiceBBDD serviceRESTBBDD;
     List<Item> obtainedItems;
     private ProgressBar progressBar;
 
@@ -51,8 +54,10 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
 
         //INSTANCIA Service
         serviceREST=Service.getInstance(context);
+        serviceRESTBBDD=ServiceBBDD.getInstance(context);
 
         this.username = getIntent().getStringExtra("userName");
+        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
 
 
         //RecyclerView
@@ -66,7 +71,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyAdapter(context,obtainedItems, username ,ItemsActivity.this);
+        mAdapter = new MyAdapter(context,obtainedItems, username ,ItemsActivity.this,isFromDatabase);
         recyclerView.setAdapter(mAdapter);
         progressBar = findViewById(R.id.progressBar);
 
@@ -75,7 +80,12 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
 
     public void getAllItemsUserCanBuy(){
         progressBar.setVisibility(View.VISIBLE);
-        serviceREST.getItemssUserCanBuy(this);
+        if(isFromDatabase){
+            serviceRESTBBDD.getItemssUserCanBuy(username,this);
+        }
+        else{
+            serviceREST.getItemssUserCanBuy(this);
+        }
     }
 
     @Override

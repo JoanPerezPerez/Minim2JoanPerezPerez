@@ -24,9 +24,11 @@ import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
 import com.example.robacobres_androidclient.services.Service;
+import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class MultiActivity extends AppCompatActivity implements AuthCallback, UserCallback {
     Service serviceREST;
+    ServiceBBDD serviceRESTBBDD;
     Button btnPlay;
     Button btnMisObjetos;
     Button btnMisPersonajes;
@@ -41,6 +43,7 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
     String userName;
     String password;
 
+    boolean isFromDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         context = MultiActivity.this;
 
         serviceREST=Service.getInstance(this);
+        serviceRESTBBDD=ServiceBBDD.getInstance(this);
 
         btnPlay = findViewById(R.id.Button_play);
         btnMisObjetos = findViewById(R.id.Button_misobjetos);
@@ -68,7 +72,7 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         userId = intent.getStringExtra("userId");
         userName = intent.getStringExtra("userName");
         password = intent.getStringExtra("password");
-
+        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
     }
 
     public void onClickTienda(View V){
@@ -78,12 +82,14 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         intent.putExtra("userId", userId);
         intent.putExtra("userName", userName);
         intent.putExtra("password", password);
+        intent.putExtra("isFromDatabase",isFromDatabase);
         progressBar.setVisibility(View.GONE);
         startActivity(intent);
     }
 
     public void onClickLogout(View V){
         this.serviceREST.quitSession(this);
+        this.serviceRESTBBDD.quitSession(this);
 
         Intent intent = new Intent(context, LogInActivity.class);
 
@@ -113,22 +119,27 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                serviceREST.deleteUser(MultiActivity.this,MultiActivity.this);
+                if(isFromDatabase){
+                    serviceRESTBBDD.deleteUser(MultiActivity.this,MultiActivity.this);
+                }else{
+                    serviceREST.deleteUser(MultiActivity.this,MultiActivity.this);
+                }
                 dialog.dismiss();
             }
         });
-
         dialog.show();
-
     }
 
     public void onClickChangePassword(View V){
         Intent intent = new Intent(context, ChangePasswordActivity.class);
+        intent.putExtra("isFromDatabase",isFromDatabase);
         context.startActivity(intent);
     }
 
     public void onClickMyItems(View V){
         Intent intent = new Intent(context, MyItemsActivity.class);
+        intent.putExtra("isFromDatabase",isFromDatabase);
+        intent.putExtra("userName", userName);
         context.startActivity(intent);
     }
 

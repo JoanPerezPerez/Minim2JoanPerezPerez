@@ -16,6 +16,7 @@ import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.ChangePassword;
 import com.example.robacobres_androidclient.models.User;
 import com.example.robacobres_androidclient.services.Service;
+import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class ChangePasswordActivity extends AppCompatActivity implements UserCallback {
     EditText actualPassword;
@@ -23,6 +24,9 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCal
     EditText newPassword2;
     private Context context;
     Service service;
+    ServiceBBDD serviceBBDD;
+    boolean isFromDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCal
         newPassword2=findViewById(R.id.NewPassword2Text);
         context=ChangePasswordActivity.this;
         service = Service.getInstance(context);
+        serviceBBDD = ServiceBBDD.getInstance(context);
+        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
     }
 
     public void onClickBotonRetroceder(View V){
@@ -53,7 +59,12 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCal
         }else{
             if(new1p.equals(new2p)){
                 ChangePassword passwords = new ChangePassword(actualp,new1p);
-                this.service.UserChangePassword(passwords,this);
+                if(isFromDatabase){
+                    this.serviceBBDD.UserChangePassword(passwords,this);
+                }
+                else{
+                    this.service.UserChangePassword(passwords,this);
+                }
             }else{
                 Toast.makeText(ChangePasswordActivity.this, "LAS CONTRASEÑAS NUEVAS NO COINCIDEN", Toast.LENGTH_SHORT).show();
             }

@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
 import com.example.robacobres_androidclient.services.Service;
+import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -25,12 +26,15 @@ public class PasswordRecovery extends AppCompatActivity implements UserCallback{
     EditText textUsername;
     private Context context;
     Service service;
+    ServiceBBDD serviceBBDD;
     private ProgressBar progressBar;
+    boolean isFromDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_password_recovery);
+        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -40,6 +44,7 @@ public class PasswordRecovery extends AppCompatActivity implements UserCallback{
         textUsername=findViewById(R.id.usernameText);
         context= PasswordRecovery.this;
         service=Service.getInstance(this.context);
+        serviceBBDD=ServiceBBDD.getInstance(this.context);
         progressBar = findViewById(R.id.progressBar);
     }
     public void onClickBotonRetroceder(View V){
@@ -49,7 +54,12 @@ public class PasswordRecovery extends AppCompatActivity implements UserCallback{
     public void onClickRecover(View V){
         progressBar.setVisibility(View.VISIBLE);
         String user=textUsername.getText().toString().trim();
-        this.service.RecoverPassword(user,this);
+        if(isFromDatabase){
+            this.serviceBBDD.RecoverPassword(user,this);
+        }
+        else{
+            this.service.RecoverPassword(user,this);
+        }
         progressBar.setVisibility(View.GONE);
     }
     @Override

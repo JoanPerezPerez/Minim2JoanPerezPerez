@@ -22,13 +22,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Service {
-    private static Service instance;
+public class ServiceBBDD {
+    private static ServiceBBDD instance;
     private Retrofit retrofit;
-    private Servidor serv;
+    private ServidorBBDD serv;
 
     // Private constructor to prevent instantiation from other classes
-    private Service(Context context) {
+    private ServiceBBDD(Context context) {
 
         // Interceptor para loggear las peticiones HTTP (útil para depuración)
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -49,15 +49,15 @@ public class Service {
                 .client(client)                                           // Cliente OkHttp
                 .build();
 
-        serv = retrofit.create(Servidor.class);
+        serv = retrofit.create(ServidorBBDD.class);
     }
 
     // Método público para obtener la única instancia del Singleton Service
-    public static Service getInstance(Context context) {
+    public static ServiceBBDD getInstance(Context context) {
         if (instance == null) {
-            synchronized (Service.class) {
+            synchronized (ServiceBBDD.class) {
                 if (instance == null) {
-                    instance = new Service(context); // Crear la instancia si es nula
+                    instance = new ServiceBBDD(context); // Crear la instancia si es nula
                 }
             }
         }
@@ -212,8 +212,9 @@ public class Service {
         });
     }
 
-    public void getItemssUserCanBuy(final ItemCallback callback) {
-        Call<List<Item>> call = serv.getItemssUserCanBuy();
+    public void getItemssUserCanBuy(String user, final ItemCallback callback) {
+        //@Path("NameUser") String NameUser
+        Call<List<Item>> call = serv.getItemssUserCanBuy(user);
         call.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
@@ -248,8 +249,8 @@ public class Service {
         });
     }
 
-    public void getMyItems(final ItemCallback callback) {
-        Call<List<Item>> call = serv.getMyItems();
+    public void getMyItems(final ItemCallback callback, String _username) {
+        Call<List<Item>> call = serv.getMyItems(_username);
         call.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
@@ -270,10 +271,16 @@ public class Service {
                     callback.onError("No items");
 
                 }
+                else if (response.code() == 506) {
+                    Log.d("API_RESPONSE", "User not logged in yet");
+                    callback.onError("User not logged in yet");
+
+                }
                 else {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                     callback.onError("Error "+response.code());
                 }
+
             }
 
             @Override
@@ -284,8 +291,8 @@ public class Service {
         });
     }
 
-    public void getItem(String _id) {
-        Call<Item> call = serv.getItem(_id);
+    public void getItem(String itemName) {
+        Call<Item> call = serv.getItem(itemName);
         call.enqueue(new Callback<Item>() {
             @Override
             public void onResponse(Call<Item> call, Response<Item> response) {
