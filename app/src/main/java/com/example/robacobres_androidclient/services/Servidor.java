@@ -1,6 +1,7 @@
 package com.example.robacobres_androidclient.services;
 
 import com.example.robacobres_androidclient.models.ChangePassword;
+import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
 
@@ -56,26 +57,14 @@ public interface Servidor {
     @GET("users/sessionOut")
     Call<Void> quitSession();
 
-
     @POST("store/buyItem/{itemName}")
-    Call<List<Item>> userBuys(@Path("itemName") String itemName);
+    Call<List<Item>> userBuysItem(@Path("itemName") String itemName);
+
+    @POST("store/buyItem/{CharacterName}")
+    Call<List<GameCharacter>> userBuysCharacter(@Path("CharacterName") String CharacterName);
 
     @GET("store/ItemsUserCanBuy")
     Call<List<Item>> getItemssUserCanBuy();
 
 
-    /*
-    //DELETE
-    @DELETE("tracks/{id}")
-    Call<Void> deleteTrack(@Path("id") String id);
-
-
-    //PUT
-    @PUT("tracks")
-    Call<Void> putTrack(@Body Track track);
-
-    //POST
-    @POST("tracks")
-    Call<Track> postTrack(@Body Track track);
-     */
 }

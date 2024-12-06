@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.robacobres_androidclient.callbacks.AuthCallback;
+import com.example.robacobres_androidclient.callbacks.CharacterCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.interceptors.AddCookiesInterceptor;
 import com.example.robacobres_androidclient.interceptors.ReceivedCookiesInterceptor;
 import com.example.robacobres_androidclient.models.ChangePassword;
+import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
 
@@ -381,8 +383,8 @@ public class Service {
         });
     }
 
-    public void userBuys(String _username, String itemName, final ItemCallback callback) {
-        Call<List<Item>> call = serv.userBuys(itemName);
+    public void userBuysItem(String _username, String itemName, final ItemCallback callback) {
+        Call<List<Item>> call = serv.userBuysItem(itemName);
         call.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
@@ -415,6 +417,45 @@ public class Service {
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+    public void userBuysCharacter(String _username, String characterName, final CharacterCallback callback) {
+        Call<List<GameCharacter>> call = serv.userBuysCharacter(characterName);
+        call.enqueue(new Callback<List<GameCharacter>>() {
+            @Override
+            public void onResponse(Call<List<GameCharacter>> call, Response<List<GameCharacter>> response) {
+                if (response.code() == 201) {
+                    Log.d("API_RESPONSE", "Item Comprado: " + characterName);
+                    callback.onPurchaseOk(characterName);
+                    //Actualitza la llista amb els objectes que no te comprats
+                    List<GameCharacter> charactersnotbought = response.body();
+                    callback.onCharacterCallback(charactersnotbought);
+                }
+                else if (response.code() == 501){
+                    Log.d("API_RESPONSE", "User NOT found ");
+                }
+                else if(response.code() == 502){
+                    Log.d("API_RESPONSE", "Character NOT available");
+                }
+                else if (response.code() == 503) {
+                    Log.d("API_RESPONSE", "Not enough money");
+                    callback.onError("Ahorra un poco, pobre!");
+                }
+                else if (response.code() == 506) {
+                    Log.d("API_RESPONSE", "User not logged in yet");
+                    callback.onError("LOGUEATE!");
+
+                }
+                else {
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GameCharacter>> call, Throwable t) {
                 Log.e("API_ERROR", "API call failed", t);
             }
         });

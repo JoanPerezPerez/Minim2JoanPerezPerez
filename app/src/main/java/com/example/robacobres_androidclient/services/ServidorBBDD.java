@@ -57,7 +57,10 @@ public interface ServidorBBDD {
 
 
     @POST("storeBBDD/buyItem/{itemName}")
-    Call<List<Item>> userBuys(@Path("itemName") String itemName);
+    Call<List<Item>> userBuysItem(@Path("itemName") String itemName);
+
+    @POST("storeBBDD/buyCharacters/{CharacterName}")
+    Call<List<GameCharacter>> userBuysCharacter(@Path("CharacterName") String CharacterName);
 
     @GET("storeBBDD/ItemsUserCanBuy/{NameUser}") //ARREGLAR
     Call<List<Item>> getItemssUserCanBuy(@Path("NameUser") String NameUser);

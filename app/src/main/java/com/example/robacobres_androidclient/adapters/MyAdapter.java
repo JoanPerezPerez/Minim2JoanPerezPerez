@@ -136,9 +136,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     if (isFromDataBase) {
-                        serviceBBDD.userBuys(username, item.getName(), itemCallback);
+                        serviceBBDD.userBuysItem(username, item.getName(), itemCallback);
                     } else {
-                        service.userBuys(username, item.getName(), itemCallback);
+                        service.userBuysItem(username, item.getName(), itemCallback);
                     }
                 }
             });
@@ -153,16 +153,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     .load("")
                     .into(holder.icon);
 
-//            holder.comprar.setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (isFromDataBase) {
-//                        serviceBBDD.userBuys(username, character.getName(), characterCallback);
-//                    } else {
-//                        service.userBuys(username, character.getName(), characterCallback);
-//                    }
-//                }
-//            });
+            holder.comprar.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isFromDataBase) {
+                        serviceBBDD.userBuysCharacter(username, character.getName(), characterCallback);
+                    } else {
+                        service.userBuysCharacter(username, character.getName(), characterCallback);
+                    }
+                }
+            });
         }
     }
 
