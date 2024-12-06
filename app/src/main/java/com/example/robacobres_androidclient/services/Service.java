@@ -248,6 +248,42 @@ public class Service {
         });
     }
 
+    public void getCharactersUserCanBuy(final ItemCallback callback) {
+        Call<List<Item>> call = serv.getItemssUserCanBuy();
+        call.enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                if (response.code() == 201) {
+                    List<Item> items = response.body();
+                    callback.onItemCallback(items);
+                    for (Item it : items) {
+                        Log.d("API_RESPONSE", "Item Name: " + it.getName() + " Item Price: " + it.getCost());
+                    }
+                }
+                else if (response.code() == 500){
+                    Log.d("API_RESPONSE", "ERROR ");
+                    callback.onError("Error");
+                }
+
+                else if (response.code() == 505) {
+                    Log.d("API_RESPONSE", "Not more items to buy");
+                    callback.onError("Has comprado todos los items de la tienda!");
+
+                }
+                else {
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                    callback.onError("Error "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+                callback.onError("ERROR WITH CONNECTION");
+            }
+        });
+    }
+
     public void getMyItems(final ItemCallback callback) {
         Call<List<Item>> call = serv.getMyItems();
         call.enqueue(new Callback<List<Item>>() {

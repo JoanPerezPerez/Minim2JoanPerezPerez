@@ -1,6 +1,7 @@
 package com.example.robacobres_androidclient.services;
 
 import com.example.robacobres_androidclient.models.ChangePassword;
+import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
 
@@ -61,7 +62,8 @@ public interface ServidorBBDD {
     @GET("storeBBDD/ItemsUserCanBuy/{NameUser}") //ARREGLAR
     Call<List<Item>> getItemssUserCanBuy(@Path("NameUser") String NameUser);
 
-
+    @GET("storeBBDD/CharactersUserCanBuy/{NameUser}") //ARREGLAR
+    Call<List<GameCharacter>> getCharactersUserCanBuy(@Path("NameUser") String NameUser);
     /*
     //DELETE
     @DELETE("tracks/{id}")

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.robacobres_androidclient.callbacks.AuthCallback;
+import com.example.robacobres_androidclient.callbacks.CharacterCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.interceptors.AddCookiesInterceptor;
 import com.example.robacobres_androidclient.interceptors.ReceivedCookiesInterceptor;
 import com.example.robacobres_androidclient.models.ChangePassword;
+import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
 
@@ -243,6 +245,50 @@ public class ServiceBBDD {
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+                callback.onError("ERROR WITH CONNECTION");
+            }
+        });
+    }
+
+    public void getCharactersUserCanBuy(String user, final CharacterCallback callback) {
+        //@Path("NameUser") String NameUser
+        Call<List<GameCharacter>> call = serv.getCharactersUserCanBuy(user);
+        call.enqueue(new Callback<List<GameCharacter>>() {
+            @Override
+            public void onResponse(Call<List<GameCharacter>> call, Response<List<GameCharacter>> response) {
+                if (response.code() == 201) {
+                    List<GameCharacter> Charactes = response.body();
+                    callback.onCharacterCallback(Charactes);
+                    for (GameCharacter it : Charactes) {
+                        Log.d("API_RESPONSE", "Character Name: " + it.getName() + " Character Price: " + it.getCost());
+                    }
+                }
+                else if (response.code() == 500){
+                    Log.d("API_RESPONSE", "ERROR ");
+                    callback.onError("Error");
+                }
+
+                else if (response.code() == 501) {
+                    Log.d("API_RESPONSE", "user not found");
+                    callback.onError("ATTENTION USER NOT FOUND!");
+                }
+                else if (response.code() == 502) {
+                    Log.d("API_RESPONSE", "Not enough money");
+                    callback.onError("ERES POBRE!");
+                }
+                else if (response.code() == 506) {
+                    Log.d("API_RESPONSE", "User not logged in yet");
+                    callback.onError("User not logged in yet!");
+                }
+                else {
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                    callback.onError("Error "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GameCharacter>> call, Throwable t) {
                 Log.e("API_ERROR", "API call failed", t);
                 callback.onError("ERROR WITH CONNECTION");
             }

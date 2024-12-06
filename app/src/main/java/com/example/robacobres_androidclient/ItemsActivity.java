@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robacobres_androidclient.adapters.MyAdapter;
+import com.example.robacobres_androidclient.callbacks.CharacterCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
+import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
@@ -23,7 +25,7 @@ import com.example.robacobres_androidclient.services.ServiceBBDD;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsActivity extends AppCompatActivity implements ItemCallback {
+public class ItemsActivity extends AppCompatActivity implements ItemCallback, CharacterCallback {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -34,7 +36,10 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
     Service serviceREST;
     ServiceBBDD serviceRESTBBDD;
     List<Item> obtainedItems;
+    List<GameCharacter> obtainedCharacters;
+    List<Object> combinedList;
     private ProgressBar progressBar;
+    boolean hayItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,9 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
 
         //VARIABLES MAIN
         this.obtainedItems=new ArrayList<>();
+        this.obtainedCharacters=new ArrayList<>();
+        this.combinedList=new ArrayList<>();
+        hayItems = false;
 
         context=ItemsActivity.this;
 
@@ -71,15 +79,18 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyAdapter(context,obtainedItems, username ,ItemsActivity.this,isFromDatabase);
+        mAdapter = new MyAdapter(context,combinedList, username ,ItemsActivity.this, ItemsActivity.this,isFromDatabase);
+
         recyclerView.setAdapter(mAdapter);
         progressBar = findViewById(R.id.progressBar);
 
         getAllItemsUserCanBuy();
+        getAllCharactersUserCanBuy();
     }
 
     public void getAllItemsUserCanBuy(){
         progressBar.setVisibility(View.VISIBLE);
+        hayItems = false;
         if(isFromDatabase){
             serviceRESTBBDD.getItemssUserCanBuy(username,this);
         }
@@ -88,11 +99,40 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
         }
     }
 
+    public void getAllCharactersUserCanBuy(){
+        progressBar.setVisibility(View.VISIBLE);
+        if(isFromDatabase){
+            serviceRESTBBDD.getCharactersUserCanBuy(username,this);
+        }
+        else{
+            serviceREST.getCharactersUserCanBuy(this);
+        }
+    }
+
     @Override
     public void onItemCallback(List<Item> objects) {
         // Actualizar la lista de items y notificar al adapter
         obtainedItems.clear();
         obtainedItems.addAll(objects);
+        combinedList.clear();  // Esborra la llista combinada anterior
+        combinedList.addAll(objects);  // Afegeix els items
+        combinedList.addAll(obtainedCharacters);
+        mAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+        hayItems = true;
+    }
+    @Override
+    public void onCharacterCallback(List<GameCharacter> objects) {
+        // Actualizar la lista de items y notificar al adapter
+        obtainedCharacters.clear();
+        obtainedCharacters.addAll(objects);
+        if(hayItems){
+            combinedList.addAll(objects);
+        }
+        else{
+            combinedList.clear();  // Esborra la llista combinada anterior
+            combinedList.addAll(objects);
+        }
         mAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
     }
@@ -111,4 +151,5 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback {
     public void onClickBotonRetroceder(View V){
         finish();
     }
+
 }
