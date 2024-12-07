@@ -8,5 +8,5 @@ public interface UserCallback {
     void onMessage(String message);
     void onDeleteUser();
     void onCorrectProcess();
-;
+;   void onUserLoaded(User user);
 }

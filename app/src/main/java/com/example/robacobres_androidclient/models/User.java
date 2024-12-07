@@ -1,6 +1,8 @@
 package com.example.robacobres_androidclient.models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     String id;
     String name;
     String password;
@@ -8,7 +10,7 @@ public class User {
     double money;
     double cobre;
     static int lastId;
-
+    public User(){}
     public User(String user, String password, String mail) {
         this(null, user, password, mail);
     }

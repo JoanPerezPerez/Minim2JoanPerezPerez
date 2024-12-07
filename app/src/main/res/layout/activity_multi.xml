@@ -90,7 +90,7 @@
         android:onClick="onClickVenderCobre"/>
 
     <Button
-        android:id="@+id/Button_ChangePassword"
+        android:id="@+id/Button_VerMisDatos"
         android:layout_width="115dp"
         android:layout_height="115dp"
         android:layout_below="@id/Button_Mispersonajes"
@@ -98,10 +98,10 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/button_gradient"
         android:fontFamily="fantasy"
-        android:text="Cambiar Contraseña"
+        android:onClick="onClickSeeMyData"
+        android:text="VER MIS DATOS"
         android:textColor="#000000"
-        android:textStyle="bold"
-        android:onClick="onClickChangePassword"/>
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/Button_eliminarcuenta"
