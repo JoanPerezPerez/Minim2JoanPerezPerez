@@ -60,11 +60,14 @@ public interface Servidor {
     @POST("store/buyItem/{itemName}")
     Call<List<Item>> userBuysItem(@Path("itemName") String itemName);
 
-    @POST("store/buyItem/{CharacterName}")
+    @POST("store/buyCharacters/{CharacterName}")
     Call<List<GameCharacter>> userBuysCharacter(@Path("CharacterName") String CharacterName);
 
     @GET("store/ItemsUserCanBuy")
     Call<List<Item>> getItemssUserCanBuy();
+
+    @GET ("store/CharactersUserCanBuy/{NameUser}")
+    Call<List<GameCharacter>> getCharactersUserCanBuy();
 
 
 }

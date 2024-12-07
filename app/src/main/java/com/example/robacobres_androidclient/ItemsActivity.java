@@ -119,20 +119,15 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
         combinedList.addAll(obtainedCharacters);
         mAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
-        hayItems = true;
     }
     @Override
     public void onCharacterCallback(List<GameCharacter> objects) {
         // Actualizar la lista de items y notificar al adapter
         obtainedCharacters.clear();
         obtainedCharacters.addAll(objects);
-        if(hayItems){
-            combinedList.addAll(objects);
-        }
-        else{
-            combinedList.clear();  // Esborra la llista combinada anterior
-            combinedList.addAll(objects);
-        }
+        combinedList.clear();  // Esborra la llista combinada anterior
+        combinedList.addAll(obtainedItems);
+        combinedList.addAll(objects);
         mAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
     }
