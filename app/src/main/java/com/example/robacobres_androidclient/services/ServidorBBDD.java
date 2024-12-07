@@ -21,6 +21,10 @@ public interface ServidorBBDD {
     @POST("usersBBDD/register") //OK
     Call<User> registerUser(@Body User user);
 
+    //GetUser
+    @POST("usersBBDD/stats") //OK
+    Call<User> getUser();
+
     //login user
     @POST("usersBBDD/login") //OK
     Call<Void> loginUser(@Body User user);

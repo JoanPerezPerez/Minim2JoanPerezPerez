@@ -77,6 +77,9 @@ public class PasswordRecovery extends AppCompatActivity implements UserCallback{
     public void onDeleteUser() {}
 
     @Override
+    public void onUserLoaded(User u) {}
+
+    @Override
     public void onCorrectProcess() {this.finish();}
 
 }

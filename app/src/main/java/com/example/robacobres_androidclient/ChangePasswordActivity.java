@@ -89,5 +89,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCal
     public void onDeleteUser() {}
 
     @Override
+    public void onUserLoaded(User u){}
+
+    @Override
     public void onCorrectProcess() {this.finish();}
 }

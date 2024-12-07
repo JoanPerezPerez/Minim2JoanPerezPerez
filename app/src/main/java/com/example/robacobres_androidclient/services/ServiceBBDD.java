@@ -92,6 +92,29 @@ public class ServiceBBDD {
         });
     }
 
+    public void getUser(final UserCallback callback){
+        Call<User> call = serv.getUser();
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() == 201) {
+                    callback.onUserLoaded(response.body()); // Retornem l'usuari via el callback
+                } else if (response.code() == 506) {
+                    callback.onMessage("User Not Yet Logged");
+                    Log.d("API_RESPONSE", "USERNAMEUSED");
+                } else {
+                    Log.d("API_RESPONSE", "ERROR");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+                callback.onMessage("ERROR DUE TO CONNECTION");
+            }
+        });
+    }
+
     public void loginUser(String _username, String _password, final UserCallback callback) {
         User body = new User(_username, _password);
         Call<Void> call = serv.loginUser(body);
@@ -250,6 +273,7 @@ public class ServiceBBDD {
             }
         });
     }
+
 
     public void getCharactersUserCanBuy(String user, final CharacterCallback callback) {
         //@Path("NameUser") String NameUser

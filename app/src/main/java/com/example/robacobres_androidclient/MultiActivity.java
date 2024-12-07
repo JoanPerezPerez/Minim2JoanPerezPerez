@@ -34,6 +34,7 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
     Button btnMisPersonajes;
     ImageButton btnTienda;
     Button btnEliminarCuenta;
+    User user;
 
     private ProgressBar progressBar;
 
@@ -73,6 +74,7 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         userName = intent.getStringExtra("userName");
         password = intent.getStringExtra("password");
         isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
+        getUser();
     }
 
     public void onClickTienda(View V){
@@ -130,9 +132,10 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         dialog.show();
     }
 
-    public void onClickChangePassword(View V){
-        Intent intent = new Intent(context, ChangePasswordActivity.class);
+    public void onClickSeeMyData(View V){
+        Intent intent = new Intent(context, SeeMyDataActivity.class);
         intent.putExtra("isFromDatabase",isFromDatabase);
+        intent.putExtra("userInfo",user);
         context.startActivity(intent);
     }
 
@@ -153,6 +156,15 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
 
     public void onClickPlay(View V){
 
+    }
+
+    public void getUser(){
+        if(isFromDatabase){
+            this.serviceRESTBBDD.getUser(this);
+        }
+        else{
+            this.serviceREST.getUser(this);
+        }
     }
 
     @Override
@@ -185,6 +197,11 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
 
     @Override
     public void onLoginOK(User _user){}
+
+    @Override
+    public void onUserLoaded(User u) {
+        user = u;
+    }
 
     @Override
     public void onCorrectProcess() {
