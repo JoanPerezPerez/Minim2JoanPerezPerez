@@ -302,16 +302,16 @@ public class Service {
         });
     }
 
-    public void getCharactersUserCanBuy(final ItemCallback callback) {
-        Call<List<Item>> call = serv.getItemssUserCanBuy();
-        call.enqueue(new Callback<List<Item>>() {
+    public void getCharactersUserCanBuy(final CharacterCallback callback) {
+        Call<List<GameCharacter>> call = serv.getCharactersUserCanBuy();
+        call.enqueue(new Callback<List<GameCharacter>>() {
             @Override
-            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+            public void onResponse(Call<List<GameCharacter>> call, Response<List<GameCharacter>> response) {
                 if (response.code() == 201) {
-                    List<Item> items = response.body();
-                    callback.onItemCallback(items);
-                    for (Item it : items) {
-                        Log.d("API_RESPONSE", "Item Name: " + it.getName() + " Item Price: " + it.getCost());
+                    List<GameCharacter> characters = response.body();
+                    callback.onCharacterCallback(characters);
+                    for (GameCharacter g : characters) {
+                        Log.d("API_RESPONSE", "Item Name: " + g.getName() + " Item Price: " + g.getCost());
                     }
                 }
                 else if (response.code() == 500){
@@ -320,7 +320,7 @@ public class Service {
                 }
 
                 else if (response.code() == 505) {
-                    Log.d("API_RESPONSE", "Not more items to buy");
+                    Log.d("API_RESPONSE", "Not more characters to buy");
                     callback.onError("Has comprado todos los items de la tienda!");
 
                 }
@@ -331,7 +331,7 @@ public class Service {
             }
 
             @Override
-            public void onFailure(Call<List<Item>> call, Throwable t) {
+            public void onFailure(Call<List<GameCharacter>> call, Throwable t) {
                 Log.e("API_ERROR", "API call failed", t);
                 callback.onError("ERROR WITH CONNECTION");
             }
