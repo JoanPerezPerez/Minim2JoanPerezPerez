@@ -66,11 +66,11 @@ public interface ServidorBBDD {
     @POST("storeBBDD/buyCharacters/{CharacterName}")
     Call<List<GameCharacter>> userBuysCharacter(@Path("CharacterName") String CharacterName);
 
-    @GET("storeBBDD/ItemsUserCanBuy/{NameUser}") //ARREGLAR
-    Call<List<Item>> getItemssUserCanBuy(@Path("NameUser") String NameUser);
+    @GET("storeBBDD/ItemsUserCanBuy") //ARREGLAR
+    Call<List<Item>> getItemssUserCanBuy();
 
-    @GET("storeBBDD/CharactersUserCanBuy/{NameUser}") //ARREGLAR
-    Call<List<GameCharacter>> getCharactersUserCanBuy(@Path("NameUser") String NameUser);
+    @GET("storeBBDD/CharactersUserCanBuy") //ARREGLAR
+    Call<List<GameCharacter>> getCharactersUserCanBuy();
     /*
     //DELETE
     @DELETE("tracks/{id}")

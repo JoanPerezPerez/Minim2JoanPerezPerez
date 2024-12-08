@@ -237,9 +237,8 @@ public class ServiceBBDD {
         });
     }
 
-    public void getItemssUserCanBuy(String user, final ItemCallback callback) {
-        //@Path("NameUser") String NameUser
-        Call<List<Item>> call = serv.getItemssUserCanBuy(user);
+    public void getItemssUserCanBuy(final ItemCallback callback) {
+        Call<List<Item>> call = serv.getItemssUserCanBuy();
         call.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
@@ -275,9 +274,9 @@ public class ServiceBBDD {
     }
 
 
-    public void getCharactersUserCanBuy(String user, final CharacterCallback callback) {
+    public void getCharactersUserCanBuy(final CharacterCallback callback) {
         //@Path("NameUser") String NameUser
-        Call<List<GameCharacter>> call = serv.getCharactersUserCanBuy(user);
+        Call<List<GameCharacter>> call = serv.getCharactersUserCanBuy();
         call.enqueue(new Callback<List<GameCharacter>>() {
             @Override
             public void onResponse(Call<List<GameCharacter>> call, Response<List<GameCharacter>> response) {

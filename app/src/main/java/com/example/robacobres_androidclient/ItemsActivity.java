@@ -92,7 +92,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
         progressBar.setVisibility(View.VISIBLE);
         hayItems = false;
         if(isFromDatabase){
-            serviceRESTBBDD.getItemssUserCanBuy(username,this);
+            serviceRESTBBDD.getItemssUserCanBuy(this);
         }
         else{
             serviceREST.getItemssUserCanBuy(this);
@@ -102,7 +102,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
     public void getAllCharactersUserCanBuy(){
         progressBar.setVisibility(View.VISIBLE);
         if(isFromDatabase){
-            serviceRESTBBDD.getCharactersUserCanBuy(username,this);
+            serviceRESTBBDD.getCharactersUserCanBuy(this);
         }
         else{
             serviceREST.getCharactersUserCanBuy(this);
