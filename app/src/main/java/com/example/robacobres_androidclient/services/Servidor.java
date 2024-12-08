@@ -53,7 +53,12 @@ public interface Servidor {
     @GET("items/{id}")
     Call<Item> getItem(@Path("id") String id);
 
+    @GET("users/GetCode")
+    Call<Void> getCode();
 
+    //change correo user
+    @PUT("users/ChangeMail/{NewCorreo}/{code}")
+    Call<Void> UserChangeCorreo(@Path("NewCorreo") String NewCorreo,@Path("code") String code);
 
     @GET("users/sessionCheck")
     Call<Void> getSession();

@@ -45,6 +45,9 @@
             android:name=".SeeMyDataActivity"
             android:exported="false" />
         <activity
+            android:name=".ChangeCorreoActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashScreenActivity"
             android:exported="true">
             <intent-filter>

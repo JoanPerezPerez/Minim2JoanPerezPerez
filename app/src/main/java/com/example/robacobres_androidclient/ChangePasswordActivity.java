@@ -37,9 +37,9 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCal
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        actualPassword=findViewById(R.id.ActualPasswordText);
-        newPassword1=findViewById(R.id.NewPassword1Text);
-        newPassword2=findViewById(R.id.NewPassword2Text);
+        actualPassword=findViewById(R.id.ActualCorreoText);
+        newPassword1=findViewById(R.id.NewCorreoText);
+        newPassword2=findViewById(R.id.CodeText);
         context=ChangePasswordActivity.this;
         service = Service.getInstance(context);
         serviceBBDD = ServiceBBDD.getInstance(context);

@@ -559,12 +559,65 @@ public class ServiceBBDD {
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                 }
             }
+
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("API_ERROR", "API call failed", t);
             }
         });
     }
+
+    public void getCode(final UserCallback userCallback){
+        Call<Void> call = serv.getCode();
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 201) {
+                    userCallback.onMessage("CHECK YOUR MAIL");
+                    Log.d("API_RESPONSE", "POST SUCCESSFUL");
+                } else if (response.code() == 502) {
+                    userCallback.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }else if (response.code() == 506) {
+                    userCallback.onMessage("USER NOT LOGGED IN");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+    public void changeCorreo(String correo, String code,final UserCallback userCallback){
+        Call<Void> call = serv.UserChangeCorreo(correo,code);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 201) {
+                    userCallback.onMessage("EMAIL CHANGED");
+                    userCallback.onCorrectProcess();
+                    Log.d("API_RESPONSE", "POST SUCCESSFUL");
+                } else if (response.code() == 503) {
+                    userCallback.onMessage("WRONG CODE");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }else if (response.code() == 506) {
+                    userCallback.onMessage("USER NOT LOGGED IN");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+                else {
+                    userCallback.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
 }
 
 
