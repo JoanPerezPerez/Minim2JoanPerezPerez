@@ -1,0 +1,102 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:layout_margin="2dp">
+
+    <!-- LinearLayout for Left, Button, and Right content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_margin="15dp"
+        android:padding="5dp">
+
+        <!-- Cobre Section (Left) with Black border wrapper -->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="6dp"
+            android:background="#000000"> <!-- Black border wrapper -->
+
+            <!-- Inner RelativeLayout for Cobre with light background -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F5F5F5"> <!-- Light background for content -->
+
+                <!-- Cobre Image -->
+                <ImageView
+                    android:id="@+id/cobreImageView"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/cobre_icon"
+                    android:contentDescription="Cobre Icon" />
+
+                <!-- Cobre Text -->
+                <EditText
+                    android:id="@+id/cobreEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@id/cobreImageView"
+                    android:gravity="center_vertical"
+                    android:hint="KG"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!-- Arrow Button Section -->
+        <ImageButton
+            android:id="@+id/arrowButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerInside"
+            android:background="@android:color/transparent"
+            android:src="@drawable/arrow"
+            android:onClick="onClickTransaccion"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="6dp"
+            android:background="#000000"> <!-- Black border wrapper -->
+
+            <!-- Inner RelativeLayout for Cobre with light background -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F5F5F5"> <!-- Light background for content -->
+
+                <ImageView
+                    android:id="@+id/coinImageView"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/moneda_icono"
+                    android:contentDescription="Coin Icon" />
+
+                <!-- Coin Text -->
+                <TextView
+                    android:id="@+id/coinTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@id/coinImageView"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+

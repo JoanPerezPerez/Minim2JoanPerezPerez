@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,16 +17,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robacobres_androidclient.adapters.MyAdapter;
 import com.example.robacobres_androidclient.callbacks.CharacterCallback;
+import com.example.robacobres_androidclient.callbacks.ChargeDataCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
+import com.example.robacobres_androidclient.models.User;
 import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsActivity extends AppCompatActivity implements ItemCallback, CharacterCallback {
+public class ItemsActivity extends AppCompatActivity implements ItemCallback, CharacterCallback, ChargeDataCallback {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -38,6 +41,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
     List<Item> obtainedItems;
     List<GameCharacter> obtainedCharacters;
     List<Object> combinedList;
+    TextView CoinCount;
     private ProgressBar progressBar;
     boolean hayItems;
 
@@ -83,9 +87,11 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
 
         recyclerView.setAdapter(mAdapter);
         progressBar = findViewById(R.id.progressBar);
-
+        CoinCount= findViewById(R.id.coint).findViewById(R.id.coinTextView);
+        this.serviceREST.GetStatsUser(this);
         getAllItemsUserCanBuy();
         getAllCharactersUserCanBuy();
+        UpdateMoney();
     }
 
     public void getAllItemsUserCanBuy(){
@@ -106,6 +112,17 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
         }
         else{
             serviceREST.getCharactersUserCanBuy(this);
+        }
+    }
+
+    public void UpdateMoney(){
+        progressBar.setVisibility(View.VISIBLE);
+        hayItems = false;
+        if(isFromDatabase){
+            serviceRESTBBDD.GetStatsUser(this);
+        }
+        else{
+            serviceREST.GetStatsUser(this);
         }
     }
 
@@ -140,11 +157,23 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
 
     @Override
     public void onPurchaseOk(String idItem) {
+        UpdateMoney();
         Toast.makeText(context,"Objeto "+idItem+" comprado!",Toast.LENGTH_SHORT).show();
     }
 
-    public void onClickBotonRetroceder(View V){
-        finish();
+    public void onClickBotonRetroceder(View V){finish();}
+
+    @Override
+    public void onChargeFactorM(String factorm) {}
+
+    @Override
+    public void onChargeUser(User u) {
+        CoinCount.setText(String.valueOf(u.getMoney()));
     }
 
+    @Override
+    public void onMessage(String message){}
+
+    @Override
+    public void onPurchasOK(){}
 }

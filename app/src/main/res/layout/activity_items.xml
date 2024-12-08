@@ -23,9 +23,8 @@
         android:text="Tienda Items"
         android:textSize="24sp"
         android:textColor="#333333"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_alignTop="@id/coint"
+        android:layout_toEndOf="@id/coint"
         android:textStyle="bold" />
 
     <Button
@@ -40,11 +39,21 @@
         android:backgroundTint="#070707"
         android:onClick="onClickBotonRetroceder" />
 
+    <include
+        android:id="@+id/coint"
+        layout="@layout/coin_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="25dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title"
+        android:layout_below="@id/coint"
         android:layout_marginTop="20dp"
         android:scrollbars="vertical" />
 

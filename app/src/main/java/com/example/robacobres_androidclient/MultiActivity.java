@@ -151,7 +151,9 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
     }
 
     public void onClickVenderCobre(View V){
-
+        Intent intent = new Intent(context, VenderCobreActivity.class);
+        intent.putExtra("isFromDatabase",isFromDatabase);
+        context.startActivity(intent);
     }
 
     public void onClickPlay(View V){

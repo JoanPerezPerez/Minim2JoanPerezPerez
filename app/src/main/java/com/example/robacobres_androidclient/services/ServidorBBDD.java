@@ -59,6 +59,14 @@ public interface ServidorBBDD {
     @GET("usersBBDD/sessionOut")
     Call<Void> quitSession();
 
+    @GET("usersBBDD/GetMultiplicadorForCobre")
+    Call<String> UserGetsMultiplicador();
+
+    @GET("usersBBDD/stats")
+    Call<User> GetStatsUser();
+
+    @POST("usersBBDD/sellCobre/{KilosCobre}")
+    Call<User> UserSellsCobre(@Path("KilosCobre") Double kiloscobre);
 
     @POST("storeBBDD/buyItem/{itemName}")
     Call<List<Item>> userBuysItem(@Path("itemName") String itemName);

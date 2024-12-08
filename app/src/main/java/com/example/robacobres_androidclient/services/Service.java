@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.callbacks.CharacterCallback;
+import com.example.robacobres_androidclient.callbacks.ChargeDataCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.interceptors.AddCookiesInterceptor;
@@ -403,7 +404,7 @@ public class Service {
                 }
                 else if (response.code() == 503) {
                     Log.d("API_RESPONSE", "Not enough money");
-                    callback.onError("Ahorra un poco fuckin pobre!");
+                    callback.onError("Ahorra un poco pobre!");
                 }
                 else if (response.code() == 505) {
                     Log.d("API_RESPONSE", "Not more items to buy");
@@ -483,6 +484,82 @@ public class Service {
             }
         });
     }
+
+    public void UserGetsMultiplicador(final ChargeDataCallback callback) {
+        Call<String> call = serv.UserGetsMultiplicador();
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String factormulti = response.body();
+                    callback.onChargeFactorM(factormulti);
+                    Log.d("API_RESPONSE", "Factor multiplicador: " + factormulti);
+                } else {
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+    public void GetStatsUser(final ChargeDataCallback callback) {
+        Call<User> call = serv.GetStatsUser();
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
+                    callback.onChargeUser(user);
+                    Log.d("API_RESPONSE", "El usuario es: " + user.toString());
+                } else {
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+    public void UserSellsCobre(double kiloscobre, final ChargeDataCallback callback){
+        Call<User> call = serv.UserSellsCobre(kiloscobre);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() == 201) {
+                    callback.onMessage("Purchase successful!");
+                    User user = response.body();
+                    callback.onChargeUser(user);
+                    Log.d("API_RESPONSE", "PURCHASE SUCCESSFUL");
+                } else if (response.code() == 500) {
+                    callback.onMessage("You want to sell more cobre than you have!");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }else if (response.code() == 503){
+                    Log.d("API_RESPONSE", "Multiplicador Not Found");
+                }
+                else if(response.code() == 502){
+                    callback.onMessage("Please enter a number greater of 0Kg!");
+                    Log.d("API_RESPONSE", "User wants to sell 0 cobre");
+
+                } else {
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+
+
+
 
 }
 

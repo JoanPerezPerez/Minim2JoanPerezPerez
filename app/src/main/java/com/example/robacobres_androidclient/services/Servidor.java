@@ -61,6 +61,15 @@ public interface Servidor {
     @GET("users/sessionOut")
     Call<Void> quitSession();
 
+    @GET("users/GetMultiplicadorForCobre")
+    Call<String> UserGetsMultiplicador();
+
+    @GET("users/stats")
+    Call<User> GetStatsUser();
+
+    @POST("users/sellCobre/{KilosCobre}")
+    Call<User> UserSellsCobre(@Path("KilosCobre") Double kiloscobre);
+
     @POST("store/buyItem/{itemName}")
     Call<List<Item>> userBuysItem(@Path("itemName") String itemName);
 
