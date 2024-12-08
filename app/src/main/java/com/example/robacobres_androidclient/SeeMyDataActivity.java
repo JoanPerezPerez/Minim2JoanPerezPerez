@@ -64,6 +64,13 @@ public class SeeMyDataActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
+    public void onClickChangeCorreo(View V){
+        Intent intent = new Intent(context, ChangeCorreoActivity.class);
+        intent.putExtra("isFromDatabase",isFromDatabase);
+        intent.putExtra("correo",user.getCorreo());
+        context.startActivity(intent);
+    }
+
     public void onClickClose(View V){
         this.finish();
     }

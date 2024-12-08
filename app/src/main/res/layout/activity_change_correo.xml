@@ -21,55 +21,69 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CHANGE PASSWORD"
-        android:textSize="24sp"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="fantasy"/>
+        android:layout_marginBottom="16dp"
+        android:fontFamily="fantasy"
+        android:text="CHANGE CORREO"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/ActualCorreoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter the actual password"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="fantasy"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:hint="Enter the actual mail" />
 
     <EditText
         android:id="@+id/NewCorreoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter the new password"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="fantasy"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:hint="Enter the new mail" />
 
     <EditText
         android:id="@+id/CodeText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Repeat the new password"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="fantasy"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:hint="Enter the code obtained in the current mail" />
 
     <Button
         android:id="@+id/btn_sendCodigo"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:paddingHorizontal="16dp"
         android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:onClick="onClickChange"
-        android:text="Change"
         android:background="@drawable/button_gradient"
         android:fontFamily="fantasy"
+        android:onClick="onClickGetCode"
+        android:paddingHorizontal="16dp"
+        android:text="Get Code" />
+
+    <Button
+        android:id="@+id/btn_change"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_gradient"
+        android:fontFamily="fantasy"
+        android:onClick="onClickChange"
+        android:paddingHorizontal="16dp"
+        android:text="Change" />
 
 </LinearLayout>

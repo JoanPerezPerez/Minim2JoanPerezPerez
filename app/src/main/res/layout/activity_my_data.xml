@@ -28,7 +28,7 @@
         android:layout_marginBottom="50dp"
         android:background="@drawable/button_gradient"
         android:fontFamily="fantasy"
-        android:onClick="onClickChange"
+        android:onClick="onClickChangeCorreo"
         android:paddingHorizontal="16dp"
         android:text="Change Mail"
         app:layout_constraintBottom_toTopOf="@+id/btn_changePswd"

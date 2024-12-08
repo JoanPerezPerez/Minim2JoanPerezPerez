@@ -25,6 +25,12 @@ public interface ServidorBBDD {
     @POST("usersBBDD/stats") //OK
     Call<User> getUser();
 
+    @GET("usersBBDD/GetCode")
+    Call<Void> getCode();
+
+    //change correo user
+    @PUT("usersBBDD/ChangeMail/{NewCorreo}/{code}")
+    Call<Void> UserChangeCorreo(@Path("NewCorreo") String NewCorreo,@Path("code") String code);
     //login user
     @POST("usersBBDD/login") //OK
     Call<Void> loginUser(@Body User user);
