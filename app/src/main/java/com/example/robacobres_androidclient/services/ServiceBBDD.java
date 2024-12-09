@@ -319,8 +319,8 @@ public class ServiceBBDD {
         });
     }
 
-    public void getMyItems(final ItemCallback callback, String _username) {
-        Call<List<Item>> call = serv.getMyItems(_username);
+    public void getMyItems(final ItemCallback callback) {
+        Call<List<Item>> call = serv.getMyItems();
         call.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
@@ -419,7 +419,7 @@ public class ServiceBBDD {
         });
     }
 
-    public void userBuysItem(String _username, String itemName, final ItemCallback callback) {
+    public void userBuysItem(String itemName, final ItemCallback callback) {
         Call<List<Item>> call = serv.userBuysItem(itemName);
         call.enqueue(new Callback<List<Item>>() {
             @Override

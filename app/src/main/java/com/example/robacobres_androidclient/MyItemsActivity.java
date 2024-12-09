@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.robacobres_androidclient.adapters.MyItemsAdapter;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.models.Item;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 import java.util.ArrayList;
@@ -29,14 +28,12 @@ public class MyItemsActivity extends AppCompatActivity implements ItemCallback {
     private RecyclerView.LayoutManager layoutManager;
 
     Context context;
-    Service serviceREST;
-    ServiceBBDD serviceRESTBBDD;
+    ServiceBBDD serviceREST;
     List<Item> obtainedItems;
     String userName;
 
     private ProgressBar progressBar;
 
-    boolean isFromDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +52,7 @@ public class MyItemsActivity extends AppCompatActivity implements ItemCallback {
         context=MyItemsActivity.this;
 
         //INSTANCIA Service
-        serviceREST=Service.getInstance(context);
-        serviceRESTBBDD=ServiceBBDD.getInstance(context);
-        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
+        serviceREST=ServiceBBDD.getInstance(context);
         userName = getIntent().getStringExtra("userName");
         //RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -80,12 +75,7 @@ public class MyItemsActivity extends AppCompatActivity implements ItemCallback {
 
     public void getMyItems(){
         progressBar.setVisibility(View.VISIBLE);
-        if(isFromDatabase){
-            serviceRESTBBDD.getMyItems(this,userName);
-        }
-        else{
-            serviceREST.getMyItems(this);
-        }
+        serviceREST.getMyItems(this);
     }
 
     @Override

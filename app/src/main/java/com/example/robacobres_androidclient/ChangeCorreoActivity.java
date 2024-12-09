@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.ChangePassword;
 import com.example.robacobres_androidclient.models.User;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class ChangeCorreoActivity extends AppCompatActivity implements UserCallback {
@@ -23,9 +22,7 @@ public class ChangeCorreoActivity extends AppCompatActivity implements UserCallb
     EditText newCorreo;
     EditText code;
     private Context context;
-    Service service;
-    ServiceBBDD serviceBBDD;
-    boolean isFromDatabase;
+    ServiceBBDD service;
     String correoActual;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +38,7 @@ public class ChangeCorreoActivity extends AppCompatActivity implements UserCallb
         newCorreo = findViewById(R.id.NewCorreoText);
         code = findViewById(R.id.CodeText);
         context = ChangeCorreoActivity.this;
-        service = Service.getInstance(context);
-        serviceBBDD = ServiceBBDD.getInstance(context);
-        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
+        service = ServiceBBDD.getInstance(context);
         correoActual = getIntent().getStringExtra("correo");
         actualCorreo.setText(correoActual);
     }
@@ -55,19 +50,11 @@ public class ChangeCorreoActivity extends AppCompatActivity implements UserCallb
     public void onClickChange(View V) {
         String newCorreo = this.newCorreo.getText().toString();
         String code = this.code.getText().toString();
-        if (isFromDatabase) {
-            this.serviceBBDD.changeCorreo(newCorreo, code, this);
-        } else {
-            this.service.changeCorreo(newCorreo, code, this);
-        }
+        this.service.changeCorreo(newCorreo, code, this);
     }
 
     public void onClickGetCode(View v) {
-        if (isFromDatabase) {
-            this.serviceBBDD.getCode(this);
-        } else {
-            this.service.getCode(this);
-        }
+        this.service.getCode(this);
     }
 
     @Override

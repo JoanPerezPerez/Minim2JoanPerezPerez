@@ -20,7 +20,6 @@ import com.example.robacobres_androidclient.callbacks.CharacterCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -28,10 +27,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<GameCharacter> characters;
     private List<Object> combinedList;
     private Context context;
-    private Service service;
-    private ServiceBBDD serviceBBDD;
+    private ServiceBBDD service;
     private String username;
-    private boolean isFromDataBase;
     private ItemCallback itemCallback;
     private CharacterCallback characterCallback;
     // Provide a reference to the views for each data item
@@ -61,14 +58,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(Context context,List<Object> combinedList , String username, ItemCallback _itemCallback, CharacterCallback _characterCallback, boolean isFromDataBase) {
+    public MyAdapter(Context context,List<Object> combinedList , String username, ItemCallback _itemCallback, CharacterCallback _characterCallback) {
         this.context = context;
         this.username = username;
-        this.service = Service.getInstance(context);
-        this.serviceBBDD = ServiceBBDD.getInstance(context);
+        this.service = ServiceBBDD.getInstance(context);
         this.itemCallback=_itemCallback;
         this.characterCallback=_characterCallback;
-        this.isFromDataBase = isFromDataBase;
         this.combinedList = combinedList;
     }
 
@@ -86,40 +81,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-//        // - get element from your dataset at this position
-//        // - replace the contents of the view with that element
-//        final Item i = items.get(position);
-//        holder.txtIdObj.setText(i.getId());
-//        holder.txtNameItem.setText(i.getName());
-//        holder.txtPriceItem.setText(String.valueOf(i.getCost()));
-//        //SI VOLEM FER COSES DE ELIMINAR
-//        holder.comprar.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(isFromDataBase){
-//                    serviceBBDD.userBuys(username, i.getName(),itemCallback); // Llamar al método cuando se presione el botón
-//                }
-//                else {
-//                    service.userBuys(username, i.getName(),itemCallback); // Llamar al método cuando se presione el botón
-//                }
-//                /* SI VOLGUESSIM FER QUE SOBRIS UNA NOVA PAG AMB INFO
-//                // Crear un Intent para abrir la nueva actividad
-//                Intent intent = new Intent(context, ActivityInfoSong.class);
-//
-//                // Pasar los datos del track seleccionado a la nueva actividad
-//                intent.putExtra("trackId", track.id);
-//                intent.putExtra("trackSinger", track.singer);
-//                intent.putExtra("trackName", track.title);
-//
-//                // Iniciar la nueva actividad
-//                context.startActivity(intent);
-//                 */
-//            }
-//        });
-//
-//        Glide.with(holder.icon.getContext())
-//                .load(i.getItem_url())
-//                .into(holder.icon);
         Object obj = combinedList.get(position);
 
         if (obj instanceof Item) {
@@ -135,11 +96,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             holder.comprar.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isFromDataBase) {
-                        serviceBBDD.userBuysItem(username, item.getName(), itemCallback);
-                    } else {
-                        service.userBuysItem(username, item.getName(), itemCallback);
-                    }
+                    service.userBuysItem(item.getName(), itemCallback);
                 }
             });
 
@@ -156,11 +113,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             holder.comprar.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isFromDataBase) {
-                        serviceBBDD.userBuysCharacter(username, character.getName(), characterCallback);
-                    } else {
-                        service.userBuysCharacter(username, character.getName(), characterCallback);
-                    }
+                    service.userBuysCharacter(username, character.getName(), characterCallback);
                 }
             });
         }

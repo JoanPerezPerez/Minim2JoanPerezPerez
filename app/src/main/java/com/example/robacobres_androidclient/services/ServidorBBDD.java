@@ -48,8 +48,8 @@ public interface ServidorBBDD {
     @GET("itemsBBDD")
     Call<List<Item>> getItems();
 
-    @GET("storeBBDD/Items/{NameUser}")
-    Call<List<Item>> getMyItems(@Path("NameUser") String NameUser);
+    @GET("storeBBDD/Items")
+    Call<List<Item>> getMyItems();
 
     //get a specific item
     @GET("itemsBBDD/{ItemName}") //ARREGLAR

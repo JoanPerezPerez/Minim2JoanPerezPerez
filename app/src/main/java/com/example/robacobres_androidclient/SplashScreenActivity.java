@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
-import com.example.robacobres_androidclient.services.Service;
+import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -29,7 +29,7 @@ import java.util.HashSet;
 public class SplashScreenActivity extends AppCompatActivity implements AuthCallback {
 
     private static final int SPLASH_DISPLAY_LENGTH = 3000;  // Duración de la splash screen (en milisegundos)
-    private Service service;
+    private ServiceBBDD service;
     private ImageView hiloCobreImageView;  // Imagen del hilo de cobre
 
     Context context;
@@ -46,7 +46,7 @@ public class SplashScreenActivity extends AppCompatActivity implements AuthCallb
         });
 
         context=SplashScreenActivity.this;
-        service = Service.getInstance(context);
+        service = ServiceBBDD.getInstance(context);
 
         hiloCobreImageView = findViewById(R.id.hilo_cobre);
 

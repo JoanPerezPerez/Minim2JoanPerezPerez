@@ -13,7 +13,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.robacobres_androidclient.models.User;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class SeeMyDataActivity extends AppCompatActivity {
@@ -21,9 +20,7 @@ public class SeeMyDataActivity extends AppCompatActivity {
 //    EditText newPassword1;
 //    EditText newPassword2;
     private Context context;
-    Service service;
-    ServiceBBDD serviceBBDD;
-    boolean isFromDatabase;
+    ServiceBBDD service;
     User user;
     EditText userName;
     EditText userCorreo;
@@ -41,9 +38,7 @@ public class SeeMyDataActivity extends AppCompatActivity {
             return insets;
         });
         context=SeeMyDataActivity.this;
-        service = Service.getInstance(context);
-        serviceBBDD = ServiceBBDD.getInstance(context);
-        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
+        service = ServiceBBDD.getInstance(context);
         user = (User) getIntent().getSerializableExtra("userInfo");
 
         userName=findViewById(R.id.NameText);
@@ -60,13 +55,11 @@ public class SeeMyDataActivity extends AppCompatActivity {
 
     public void onClickChangePassword(View V){
         Intent intent = new Intent(context, ChangePasswordActivity.class);
-        intent.putExtra("isFromDatabase",isFromDatabase);
         context.startActivity(intent);
     }
 
     public void onClickChangeCorreo(View V){
         Intent intent = new Intent(context, ChangeCorreoActivity.class);
-        intent.putExtra("isFromDatabase",isFromDatabase);
         intent.putExtra("correo",user.getCorreo());
         context.startActivity(intent);
     }

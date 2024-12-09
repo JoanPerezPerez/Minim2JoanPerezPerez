@@ -16,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class RegisterActivity extends AppCompatActivity implements UserCallback {
@@ -28,16 +27,13 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
     Context context;
 
-    Service serviceREST;
-    ServiceBBDD serviceRESTBBDD;
-    boolean isFromDatabase;
+    ServiceBBDD serviceREST;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
-        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -52,8 +48,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
         context=RegisterActivity.this;
 
-        serviceREST = Service.getInstance(context);
-        serviceRESTBBDD = ServiceBBDD.getInstance(context);
+        serviceREST = ServiceBBDD.getInstance(context);
     }
 
     public void onClickBotonRetroceder(View V){
@@ -77,12 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
             Toast.makeText(RegisterActivity.this, "Error, las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(isFromDatabase){
-            serviceRESTBBDD.registerUser(userName, pass, correo,this );
-        }
-        else{
-            serviceREST.registerUser(userName, pass, correo,this );
-        }
+        serviceREST.registerUser(userName, pass, correo,this );
     }
 
     @Override

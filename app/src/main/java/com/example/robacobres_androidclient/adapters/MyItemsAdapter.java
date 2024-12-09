@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.robacobres_androidclient.R;
 import com.example.robacobres_androidclient.models.Item;
-import com.example.robacobres_androidclient.services.Service;
+import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 import java.util.List;
 
 public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.ViewHolder> {
     private List<Item> items;
     private Context context;
-    private Service service;
+    private ServiceBBDD service;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -46,7 +46,7 @@ public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.ViewHold
     // Provide a suitable constructor (depends on the kind of dataset)
     public MyItemsAdapter(Context context, List<Item> myDataset) {
         this.context = context;
-        this.service = Service.getInstance(context);
+        this.service = ServiceBBDD.getInstance(context);
         items = myDataset;
     }
 

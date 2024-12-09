@@ -19,7 +19,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.robacobres_androidclient.callbacks.ChargeDataCallback;
 import com.example.robacobres_androidclient.models.User;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class VenderCobreActivity extends AppCompatActivity implements ChargeDataCallback {
@@ -31,9 +30,7 @@ public class VenderCobreActivity extends AppCompatActivity implements ChargeData
     ImageButton BotonTransaccion;
     Button BotonVender;
     private Context context;
-    Service service;
-    ServiceBBDD serviceRESTBBDD;
-    boolean isFromDatabase;
+    ServiceBBDD service;
     private ProgressBar progressBar;
 
     @Override
@@ -47,8 +44,7 @@ public class VenderCobreActivity extends AppCompatActivity implements ChargeData
             return insets;
         });
         context=VenderCobreActivity.this;
-        service = Service.getInstance(context);
-        serviceRESTBBDD=ServiceBBDD.getInstance(this);
+        service = ServiceBBDD.getInstance(context);
         CobreCount= findViewById(R.id.cobre).findViewById(R.id.cobreTextView);
         CoinCount= findViewById(R.id.coint).findViewById(R.id.coinTextView);
         FactorMulti = findViewById(R.id.FactorMultiplicador);
@@ -59,7 +55,6 @@ public class VenderCobreActivity extends AppCompatActivity implements ChargeData
         BotonVender = findViewById(R.id.btn_vender);
         progressBar = findViewById(R.id.progressBar);
 
-        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
 
         UpdateMultiplicador();
         UpdateUserInfo();
@@ -68,23 +63,13 @@ public class VenderCobreActivity extends AppCompatActivity implements ChargeData
 
     public void UpdateMultiplicador(){
         progressBar.setVisibility(View.VISIBLE);
-        if(isFromDatabase){
-            serviceRESTBBDD.UserGetsMultiplicador(this);
-        }
-        else{
-            service.UserGetsMultiplicador(this);
-        }
+        service.UserGetsMultiplicador(this);
         progressBar.setVisibility(View.GONE);
     }
 
     public void UpdateUserInfo(){
         progressBar.setVisibility(View.VISIBLE);
-        if(isFromDatabase){
-            serviceRESTBBDD.GetStatsUser(this);
-        }
-        else{
-            service.GetStatsUser(this);
-        }
+        service.GetStatsUser(this);
         progressBar.setVisibility(View.GONE);
     }
 
@@ -93,12 +78,7 @@ public class VenderCobreActivity extends AppCompatActivity implements ChargeData
         try {
             double cobreacambiar = Double.parseDouble(CobreACambiar.getText().toString().trim());
             if(cobreacambiar!=0){
-                if(isFromDatabase){
-                    serviceRESTBBDD.UserSellsCobre(cobreacambiar,this);
-                }
-                else{
-                    service.UserSellsCobre(cobreacambiar,this);
-                }
+                service.UserSellsCobre(cobreacambiar,this);
             }else{
                 Toast.makeText(context, "Por favor introduzca un valor que no sea 0.", Toast.LENGTH_SHORT).show();
             }

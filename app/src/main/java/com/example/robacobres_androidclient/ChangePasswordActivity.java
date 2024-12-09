@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.ChangePassword;
 import com.example.robacobres_androidclient.models.User;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class ChangePasswordActivity extends AppCompatActivity implements UserCallback {
@@ -23,9 +22,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCal
     EditText newPassword1;
     EditText newPassword2;
     private Context context;
-    Service service;
-    ServiceBBDD serviceBBDD;
-    boolean isFromDatabase;
+    ServiceBBDD service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +38,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCal
         newPassword1=findViewById(R.id.NewCorreoText);
         newPassword2=findViewById(R.id.CodeText);
         context=ChangePasswordActivity.this;
-        service = Service.getInstance(context);
-        serviceBBDD = ServiceBBDD.getInstance(context);
-        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
+        service = ServiceBBDD.getInstance(context);
     }
 
     public void onClickBotonRetroceder(View V){
@@ -59,12 +54,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCal
         }else{
             if(new1p.equals(new2p)){
                 ChangePassword passwords = new ChangePassword(actualp,new1p);
-                if(isFromDatabase){
-                    this.serviceBBDD.UserChangePassword(passwords,this);
-                }
-                else{
-                    this.service.UserChangePassword(passwords,this);
-                }
+                this.service.UserChangePassword(passwords,this);
             }else{
                 Toast.makeText(ChangePasswordActivity.this, "LAS CONTRASEÑAS NUEVAS NO COINCIDEN", Toast.LENGTH_SHORT).show();
             }

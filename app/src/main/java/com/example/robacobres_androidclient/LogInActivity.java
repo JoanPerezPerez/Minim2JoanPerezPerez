@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class LogInActivity extends AppCompatActivity implements UserCallback {
@@ -31,8 +30,7 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
     private Context context;
     private SwitchCompat switchBD;
 
-    Service service;
-    ServiceBBDD serviceBBDD;
+    ServiceBBDD service;
     User usuario;
     private EditText usernameTextComp;
     private EditText passwordTextComp;
@@ -58,33 +56,24 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
         passwordTextComp=findViewById(R.id.passwordText);
 
         progressBar = findViewById(R.id.progressBar);
-        switchBD = findViewById(R.id.switchBBDD);
 
         //CONTEXT (no estic segur si cal ferho aixi directament MainActivity.this)
         //crec que es equivalent pero mes comode
         context= LogInActivity.this;
 
         //INSTANCIA SERVICE
-        service=Service.getInstance(this.context);
-        serviceBBDD = ServiceBBDD.getInstance(this.context);
+        service=ServiceBBDD.getInstance(this.context);
     }
 
     public void onClickLogin(View v){
         progressBar.setVisibility(View.VISIBLE);
         user=usernameTextComp.getText().toString().trim();
         pass=passwordTextComp.getText().toString().trim();
-        if(switchBD.isChecked()){
-            this.serviceBBDD.loginUser(user,pass,this);
-        }
-        else{
-            this.service.loginUser(user,pass,this);
-        }
+        this.service.loginUser(user,pass,this);
     }
     public void onClickRegister(View v){
         // Crear un Intent para abrir la nueva actividad
         Intent intent = new Intent(context, RegisterActivity.class);
-        //Mirem si està fent peticions a memoria local o MariaDB
-        intent.putExtra("isFromDatabase", switchBD.isChecked());
         // Iniciar la nueva actividad
         context.startActivity(intent);
     }
@@ -92,8 +81,6 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
     public void onClickRecovery(View v){
         // Crear un Intent para abrir la nueva actividad
         Intent intent = new Intent(context, PasswordRecovery.class);
-        //Mirem si està fent peticions a memoria local o MariaDB
-        intent.putExtra("isFromDatabase", switchBD.isChecked());
         // Iniciar la nueva actividad
         context.startActivity(intent);
     }
@@ -111,8 +98,6 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
         intent.putExtra("password", _user.getPassword());
 
         progressBar.setVisibility(View.GONE);
-        //Mirem si està fent peticions a memoria local o MariaDB
-        intent.putExtra("isFromDatabase", switchBD.isChecked());
         // Iniciar la nueva actividad
         context.startActivity(intent);
         this.finish();

@@ -22,7 +22,6 @@ import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 import java.util.ArrayList;
@@ -35,9 +34,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
 
     Context context;
     String username;
-    boolean isFromDatabase;
-    Service serviceREST;
-    ServiceBBDD serviceRESTBBDD;
+    ServiceBBDD serviceREST;
     List<Item> obtainedItems;
     List<GameCharacter> obtainedCharacters;
     List<Object> combinedList;
@@ -65,11 +62,9 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
         context=ItemsActivity.this;
 
         //INSTANCIA Service
-        serviceREST=Service.getInstance(context);
-        serviceRESTBBDD=ServiceBBDD.getInstance(context);
+        serviceREST=ServiceBBDD.getInstance(context);
 
         this.username = getIntent().getStringExtra("userName");
-        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
 
 
         //RecyclerView
@@ -83,8 +78,7 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyAdapter(context,combinedList, username ,ItemsActivity.this, ItemsActivity.this,isFromDatabase);
-
+        mAdapter = new MyAdapter(context,combinedList, username ,ItemsActivity.this, ItemsActivity.this);
         recyclerView.setAdapter(mAdapter);
         progressBar = findViewById(R.id.progressBar);
         CoinCount= findViewById(R.id.coint).findViewById(R.id.coinTextView);
@@ -97,33 +91,18 @@ public class ItemsActivity extends AppCompatActivity implements ItemCallback, Ch
     public void getAllItemsUserCanBuy(){
         progressBar.setVisibility(View.VISIBLE);
         hayItems = false;
-        if(isFromDatabase){
-            serviceRESTBBDD.getItemssUserCanBuy(this);
-        }
-        else{
-            serviceREST.getItemssUserCanBuy(this);
-        }
+        serviceREST.getItemssUserCanBuy(this);
     }
 
     public void getAllCharactersUserCanBuy(){
         progressBar.setVisibility(View.VISIBLE);
-        if(isFromDatabase){
-            serviceRESTBBDD.getCharactersUserCanBuy(this);
-        }
-        else{
-            serviceREST.getCharactersUserCanBuy(this);
-        }
+        serviceREST.getCharactersUserCanBuy(this);
     }
 
     public void UpdateMoney(){
         progressBar.setVisibility(View.VISIBLE);
         hayItems = false;
-        if(isFromDatabase){
-            serviceRESTBBDD.GetStatsUser(this);
-        }
-        else{
-            serviceREST.GetStatsUser(this);
-        }
+        serviceREST.GetStatsUser(this);
     }
 
     @Override

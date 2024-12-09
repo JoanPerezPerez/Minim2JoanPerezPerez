@@ -23,12 +23,10 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.models.User;
-import com.example.robacobres_androidclient.services.Service;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 public class MultiActivity extends AppCompatActivity implements AuthCallback, UserCallback {
-    Service serviceREST;
-    ServiceBBDD serviceRESTBBDD;
+    ServiceBBDD serviceREST;
     Button btnPlay;
     Button btnMisObjetos;
     Button btnMisPersonajes;
@@ -59,8 +57,7 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
 
         context = MultiActivity.this;
 
-        serviceREST=Service.getInstance(this);
-        serviceRESTBBDD=ServiceBBDD.getInstance(this);
+        serviceREST=ServiceBBDD.getInstance(this);
 
         btnPlay = findViewById(R.id.Button_play);
         btnMisObjetos = findViewById(R.id.Button_misobjetos);
@@ -74,7 +71,7 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         userName = intent.getStringExtra("userName");
         password = intent.getStringExtra("password");
         isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
-        getUser();
+        this.serviceREST.getUser(this);
     }
 
     public void onClickTienda(View V){
@@ -91,7 +88,6 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
 
     public void onClickLogout(View V){
         this.serviceREST.quitSession(this);
-        this.serviceRESTBBDD.quitSession(this);
 
         Intent intent = new Intent(context, LogInActivity.class);
 
@@ -121,11 +117,7 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isFromDatabase){
-                    serviceRESTBBDD.deleteUser(MultiActivity.this,MultiActivity.this);
-                }else{
-                    serviceREST.deleteUser(MultiActivity.this,MultiActivity.this);
-                }
+                serviceREST.deleteUser(MultiActivity.this,MultiActivity.this);
                 dialog.dismiss();
             }
         });
@@ -158,15 +150,6 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
 
     public void onClickPlay(View V){
 
-    }
-
-    public void getUser(){
-        if(isFromDatabase){
-            this.serviceRESTBBDD.getUser(this);
-        }
-        else{
-            this.serviceREST.getUser(this);
-        }
     }
 
     @Override
