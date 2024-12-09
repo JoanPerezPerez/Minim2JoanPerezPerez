@@ -21,10 +21,6 @@ public interface ServidorBBDD {
     @POST("usersBBDD/register") //OK
     Call<User> registerUser(@Body User user);
 
-    //GetUser
-    @POST("usersBBDD/stats") //OK
-    Call<User> getUser();
-
     @GET("usersBBDD/GetCode")
     Call<Void> getCode();
 
@@ -70,6 +66,10 @@ public interface ServidorBBDD {
 
     @GET("usersBBDD/stats")
     Call<User> GetStatsUser();
+
+    //GetUser
+    @POST("usersBBDD/stats") //OK
+    Call<User> getUser();
 
     @POST("usersBBDD/sellCobre/{KilosCobre}")
     Call<User> UserSellsCobre(@Path("KilosCobre") Double kiloscobre);

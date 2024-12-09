@@ -94,7 +94,7 @@ public class ServiceBBDD {
     }
 
     public void getUser(final UserCallback callback){
-        Call<User> call = serv.getUser();
+        Call<User> call = serv.GetStatsUser();
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
