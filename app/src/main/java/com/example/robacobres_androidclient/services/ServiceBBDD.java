@@ -6,11 +6,13 @@ import android.util.Log;
 import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.callbacks.CharacterCallback;
 import com.example.robacobres_androidclient.callbacks.ChargeDataCallback;
+import com.example.robacobres_androidclient.callbacks.ForumCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.interceptors.AddCookiesInterceptor;
 import com.example.robacobres_androidclient.interceptors.ReceivedCookiesInterceptor;
 import com.example.robacobres_androidclient.models.ChangePassword;
+import com.example.robacobres_androidclient.models.Forum;
 import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
@@ -24,6 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
 
 public class ServiceBBDD {
     private static ServiceBBDD instance;
@@ -617,6 +620,64 @@ public class ServiceBBDD {
             }
         });
     }
+
+    public void getForum(final ForumCallback forumCallback) {
+        Call<List<Forum>> call = serv.getForum();
+        call.enqueue(new Callback<List<Forum>>() {
+            @Override
+            public void onResponse(Call<List<Forum>> call, Response<List<Forum>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Forum> forums = response.body();
+                    forumCallback.onForumCallback(forums);
+                    Log.d("API_RESPONSE", "GET SUCCESSFUL");
+                } else if (response.code() == 502) {
+                    forumCallback.onMessage("No Forum Messages");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }else if (response.code() == 506) {
+                    forumCallback.onMessage("USER NOT LOGGED IN");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+                else {
+                    forumCallback.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Forum>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+
+    public void PostInForum(Forum forum,final ForumCallback forumCallback) {
+        Call<List<Forum>> call = serv.PostInForum(forum);
+        call.enqueue(new Callback<List<Forum>>() {
+            @Override
+            public void onResponse(Call<List<Forum>> call, Response<List<Forum>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Forum> forums = response.body();
+                    forumCallback.onForumCallback(forums);
+                    Log.d("API_RESPONSE", "GET SUCCESSFUL");
+                } else if (response.code() == 502) {
+                    forumCallback.onMessage("No Forum Messages");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }else if (response.code() == 506) {
+                    forumCallback.onMessage("USER NOT LOGGED IN");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+                else {
+                    forumCallback.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Forum>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
 
 }
 

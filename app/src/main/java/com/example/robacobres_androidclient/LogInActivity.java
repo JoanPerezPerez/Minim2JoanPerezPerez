@@ -92,11 +92,6 @@ public class LogInActivity extends AppCompatActivity implements UserCallback {
         // Crear un Intent para abrir la nueva actividad
         Intent intent = new Intent(context, MultiActivity.class);
 
-        // Pasar los datos a la nueva actividad
-        intent.putExtra("userId", _user.getId());
-        intent.putExtra("userName", _user.getName());
-        intent.putExtra("password", _user.getPassword());
-
         progressBar.setVisibility(View.GONE);
         // Iniciar la nueva actividad
         context.startActivity(intent);

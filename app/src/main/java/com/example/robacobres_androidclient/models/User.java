@@ -3,7 +3,7 @@ package com.example.robacobres_androidclient.models;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    String id;
+    int id;
     String name;
     String password;
     String correo;
@@ -12,25 +12,25 @@ public class User implements Serializable {
     static int lastId;
     public User(){}
     public User(String user, String password, String mail) {
-        this(null, user, password, mail);
+        this(0, user, password, mail);
     }
 
     public User(String user, String password) {
-        this(null,user, password,null);
+        this(0,user, password,null);
     }
 
-    public User(String id, String user, String password, String mail) {
+    public User(int id, String user, String password, String mail) {
         this.setId(id);
         this.setName(user);
         this.setPassword(password);
         this.setCorreo(mail);
     }
 
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id=id;
     }
 

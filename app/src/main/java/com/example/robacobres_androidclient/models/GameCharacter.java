@@ -1,6 +1,7 @@
 package com.example.robacobres_androidclient.models;
 
 public class GameCharacter {
+    int id;
     String name;
     int strength;
     int speed;
@@ -13,6 +14,14 @@ public class GameCharacter {
         this.setStrength(strength);
         this.setName(name);
         this.setCost(cost);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

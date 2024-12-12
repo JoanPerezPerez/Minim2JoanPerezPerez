@@ -21,11 +21,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.robacobres_androidclient.callbacks.AuthCallback;
+import com.example.robacobres_androidclient.callbacks.ForumCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
+import com.example.robacobres_androidclient.models.Forum;
 import com.example.robacobres_androidclient.models.User;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
-public class MultiActivity extends AppCompatActivity implements AuthCallback, UserCallback {
+import java.io.Serializable;
+import java.util.List;
+
+public class MultiActivity extends AppCompatActivity implements AuthCallback, UserCallback, ForumCallback {
     ServiceBBDD serviceREST;
     Button btnPlay;
     Button btnMisObjetos;
@@ -38,11 +43,9 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
 
     private Context context;
 
-    String userId;
+    int userId;
     String userName;
     String password;
-
-    boolean isFromDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +70,6 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         progressBar = findViewById(R.id.progressBar);
         // Agafar les dades que li passem del usuari registrat
         Intent intent = getIntent();
-        userId = intent.getStringExtra("userId");
-        userName = intent.getStringExtra("userName");
-        password = intent.getStringExtra("password");
-        isFromDatabase = getIntent().getBooleanExtra("isFromDatabase", false);
         this.serviceREST.getUser(this);
     }
 
@@ -81,7 +80,6 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         intent.putExtra("userId", userId);
         intent.putExtra("userName", userName);
         intent.putExtra("password", password);
-        intent.putExtra("isFromDatabase",isFromDatabase);
         progressBar.setVisibility(View.GONE);
         startActivity(intent);
     }
@@ -126,14 +124,12 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
 
     public void onClickSeeMyData(View V){
         Intent intent = new Intent(context, SeeMyDataActivity.class);
-        intent.putExtra("isFromDatabase",isFromDatabase);
         intent.putExtra("userInfo",user);
         context.startActivity(intent);
     }
 
     public void onClickMyItems(View V){
         Intent intent = new Intent(context, MyItemsActivity.class);
-        intent.putExtra("isFromDatabase",isFromDatabase);
         intent.putExtra("userName", userName);
         context.startActivity(intent);
     }
@@ -144,12 +140,15 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
 
     public void onClickVenderCobre(View V){
         Intent intent = new Intent(context, VenderCobreActivity.class);
-        intent.putExtra("isFromDatabase",isFromDatabase);
         context.startActivity(intent);
     }
 
     public void onClickPlay(View V){
 
+    }
+
+    public void onClickForum(View v){
+        serviceREST.getForum(this);
     }
 
     @Override
@@ -186,10 +185,26 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
     @Override
     public void onUserLoaded(User u) {
         user = u;
+        userName = user.getName();
+        userId = user.getId();
+        password = user.getPassword();
     }
 
     @Override
     public void onCorrectProcess() {
         this.finish();
+    }
+
+    @Override
+    public void onForumCallback(List<Forum> lista){
+        Intent intent = new Intent(context, ForumActivity.class);
+        intent.putExtra("forumMessages", (Serializable) lista);
+        intent.putExtra("name", userName);
+        context.startActivity(intent);
+    }
+
+    @Override
+    public void onError(){
+
     }
 }

@@ -20,7 +20,7 @@
 
     <!-- Nombre del item -->
     <TextView
-        android:id="@+id/itemName"
+        android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/icon"
@@ -36,11 +36,11 @@
 
     <!-- Precio del item -->
     <TextView
-        android:id="@+id/itemPrice"
+        android:id="@+id/comentario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/icon"
-        android:layout_below="@id/itemName"
+        android:layout_below="@id/userName"
         android:text="Item Price"
         android:textSize="14sp"
         android:textColor="#FF6347"
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/icon"
-        android:layout_below="@id/itemPrice"
+        android:layout_below="@id/comentario"
         android:text="Item ID"
         android:textSize="12sp"
         android:textColor="#A9A9A9"

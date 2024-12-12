@@ -37,8 +37,8 @@ public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.ViewHold
             super(v);
             layout = v;
             txtIdObj = (TextView) v.findViewById(R.id.itemId);
-            txtNameItem = (TextView) v.findViewById(R.id.itemName);
-            txtPriceItem = (TextView) v.findViewById(R.id.itemPrice);
+            txtNameItem = (TextView) v.findViewById(R.id.userName);
+            txtPriceItem = (TextView) v.findViewById(R.id.comentario);
             icon=(ImageView) v.findViewById(R.id.icon);
         }
     }
