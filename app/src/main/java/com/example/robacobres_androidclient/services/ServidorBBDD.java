@@ -1,6 +1,7 @@
 package com.example.robacobres_androidclient.services;
 
 import com.example.robacobres_androidclient.models.ChangePassword;
+import com.example.robacobres_androidclient.models.ChatIndividual;
 import com.example.robacobres_androidclient.models.Forum;
 import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
@@ -86,6 +87,15 @@ public interface ServidorBBDD {
 
     @POST("usersBBDD/PostInForum") //OK
     Call<List<Forum>> PostInForum(@Body Forum forum);
+
+    @POST("usersBBDD/PrivateNames") //OK
+    Call<List<User>> getPrivateNames();
+
+    @POST("usersBBDD/PrivateMessagesWith/{name}") //OK
+    Call<List<ChatIndividual>> getPrivateMessagesWith(@Path("name") String name);
+
+    @POST("usersBBDD/PrivateChat/Post") //OK
+    Call<List<ChatIndividual>> postPrivateMessage(@Body ChatIndividual chatIndividual);
 
     @GET("storeBBDD/ItemsUserCanBuy") //ARREGLAR
     Call<List<Item>> getItemssUserCanBuy();

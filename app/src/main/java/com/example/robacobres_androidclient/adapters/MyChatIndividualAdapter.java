@@ -12,21 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robacobres_androidclient.R;
 import com.example.robacobres_androidclient.callbacks.ForumCallback;
+import com.example.robacobres_androidclient.callbacks.PrivateCallback;
 import com.example.robacobres_androidclient.models.ChatIndividual;
 import com.example.robacobres_androidclient.models.Forum;
 
 import java.util.List;
 
-public class MyForumAdapter extends RecyclerView.Adapter<MyForumAdapter.ViewHolder> {
+public class MyChatIndividualAdapter extends RecyclerView.Adapter<MyChatIndividualAdapter.ViewHolder> {
 
-    private List<Forum> messages; // Llista de missatges del fòrum
     private Context context;      // Context de l'activitat
-    private ForumCallback callback; // Callback per gestionar esdeveniments
+    private PrivateCallback callback; // Callback per gestionar esdeveniments
+    private List<ChatIndividual> chatIndividual;
     // Constructor de l'adaptador
-    public MyForumAdapter(Context context, List<Forum> messages, ForumCallback callback) {
+    public MyChatIndividualAdapter(Context context, PrivateCallback callback, List<ChatIndividual> chatIndividual) {
         this.context = context;
-        this.messages = messages;
         this.callback = callback;
+        this.chatIndividual = chatIndividual;
     }
 
     @NonNull
@@ -39,14 +40,14 @@ public class MyForumAdapter extends RecyclerView.Adapter<MyForumAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Forum forum = messages.get(position); // Obté l'element en funció de la posició
-        holder.userName.setText(forum.getName());
-        holder.comentario.setText(forum.getComentario());
+        ChatIndividual chatIndividual1 = chatIndividual.get(position); // Obté l'element en funció de la posició
+        holder.userName.setText(chatIndividual1.getName());
+        holder.comentario.setText(chatIndividual1.getComentario());
     }
 
     @Override
     public int getItemCount() {
-        return messages.size();
+        return chatIndividual.size();
     }
 
     // Classe ViewHolder per vincular els components visuals
@@ -64,8 +65,8 @@ public class MyForumAdapter extends RecyclerView.Adapter<MyForumAdapter.ViewHold
         }
     }
 
-    public void setForumMessages(List<Forum> newMessages) {
-        this.messages = newMessages; // Actualitza la llista
+    public void setPrivateMessages(List<ChatIndividual> newMessages) {
+        this.chatIndividual = newMessages; // Actualitza la llista
         notifyDataSetChanged(); // Notifica al RecyclerView que actualitzi les dades
     }
 }

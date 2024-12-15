@@ -8,10 +8,12 @@ import com.example.robacobres_androidclient.callbacks.CharacterCallback;
 import com.example.robacobres_androidclient.callbacks.ChargeDataCallback;
 import com.example.robacobres_androidclient.callbacks.ForumCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
+import com.example.robacobres_androidclient.callbacks.PrivateCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
 import com.example.robacobres_androidclient.interceptors.AddCookiesInterceptor;
 import com.example.robacobres_androidclient.interceptors.ReceivedCookiesInterceptor;
 import com.example.robacobres_androidclient.models.ChangePassword;
+import com.example.robacobres_androidclient.models.ChatIndividual;
 import com.example.robacobres_androidclient.models.Forum;
 import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
@@ -27,6 +29,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public class ServiceBBDD {
     private static ServiceBBDD instance;
@@ -678,6 +681,89 @@ public class ServiceBBDD {
         });
     }
 
+    public void getPrivateNames(final PrivateCallback privateCallback) {
+        Call<List<User>> call = serv.getPrivateNames();
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<User> names = response.body();
+                    privateCallback.onPrivateCallbackNames(names);
+                    Log.d("API_RESPONSE", "GET SUCCESSFUL");
+                } else if (response.code() == 502) {
+                    privateCallback.onMessage("No Private Messages");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }else if (response.code() == 506) {
+                    privateCallback.onMessage("USER NOT LOGGED IN");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+                else {
+                    privateCallback.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+    public void getPrivateMessagesWith(final PrivateCallback privateCallback, String name) {
+        Call<List<ChatIndividual>> call = serv.getPrivateMessagesWith(name);
+        call.enqueue(new Callback<List<ChatIndividual>>() {
+            @Override
+            public void onResponse(Call<List<ChatIndividual>> call, Response<List<ChatIndividual>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<ChatIndividual> names = response.body();
+                    privateCallback.onPrivateCallbackMessages(names);
+                    Log.d("API_RESPONSE", "GET SUCCESSFUL");
+                } else if (response.code() == 502) {
+                    privateCallback.onMessage("No Private Messages");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }else if (response.code() == 506) {
+                    privateCallback.onMessage("USER NOT LOGGED IN");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+                else {
+                    privateCallback.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<ChatIndividual>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
+
+    public void postPrivateMessage(final PrivateCallback privateCallback, ChatIndividual chat) {
+        Call<List<ChatIndividual>> call = serv.postPrivateMessage(chat);
+        call.enqueue(new Callback<List<ChatIndividual>>() {
+            @Override
+            public void onResponse(Call<List<ChatIndividual>> call, Response<List<ChatIndividual>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<ChatIndividual> names = response.body();
+                    privateCallback.onPrivateCallbackMessages(names);
+                    Log.d("API_RESPONSE", "GET SUCCESSFUL");
+                } else if (response.code() == 502) {
+                    privateCallback.onMessage("No Private Messages");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }else if (response.code() == 506) {
+                    privateCallback.onMessage("USER NOT LOGGED IN");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+                else {
+                    privateCallback.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<ChatIndividual>> call, Throwable t) {
+                Log.e("API_ERROR", "API call failed", t);
+            }
+        });
+    }
 
 }
 

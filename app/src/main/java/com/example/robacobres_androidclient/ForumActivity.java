@@ -67,6 +67,7 @@ public class ForumActivity extends AppCompatActivity implements ForumCallback {
 
     public void onClickSend(View view){
         Forum forum = new Forum(userName, textEnviar.getText().toString());
+        textEnviar.setText("");
         service.PostInForum(forum,this);
     }
 

@@ -22,15 +22,18 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.callbacks.ForumCallback;
+import com.example.robacobres_androidclient.callbacks.PrivateCallback;
 import com.example.robacobres_androidclient.callbacks.UserCallback;
+import com.example.robacobres_androidclient.models.ChatIndividual;
 import com.example.robacobres_androidclient.models.Forum;
 import com.example.robacobres_androidclient.models.User;
 import com.example.robacobres_androidclient.services.ServiceBBDD;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MultiActivity extends AppCompatActivity implements AuthCallback, UserCallback, ForumCallback {
+public class MultiActivity extends AppCompatActivity implements AuthCallback, UserCallback, ForumCallback, PrivateCallback {
     ServiceBBDD serviceREST;
     Button btnPlay;
     Button btnMisObjetos;
@@ -151,6 +154,11 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         serviceREST.getForum(this);
     }
 
+    public void onClickPrivate(View v){
+        serviceREST.getPrivateNames(this);
+
+    }
+
     @Override
     public void onDeleteUser(){
         Intent intent = new Intent(context, LogInActivity.class);
@@ -207,4 +215,20 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
     public void onError(){
 
     }
+
+    @Override
+    public void onPrivateCallbackNames(List<User> lista){
+        Intent intent = new Intent(context, PrivateMessagesActivity.class);
+        List<String> names = new ArrayList<>();
+        for(User u:lista) names.add(u.getName());
+        intent.putExtra("names", (Serializable) names);
+        intent.putExtra("userName", userName);
+        context.startActivity(intent);
+    }
+
+    @Override
+    public void onPrivateCallbackMessages(List<ChatIndividual> lista){
+
+    }
+
 }
