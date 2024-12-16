@@ -19,6 +19,7 @@ import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
 import com.example.robacobres_androidclient.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -635,6 +636,8 @@ public class ServiceBBDD {
                     Log.d("API_RESPONSE", "GET SUCCESSFUL");
                 } else if (response.code() == 502) {
                     forumCallback.onMessage("No Forum Messages");
+                    List<Forum> list = new ArrayList<>();
+                    forumCallback.onForumCallback(list);
                     Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
                 }else if (response.code() == 506) {
                     forumCallback.onMessage("USER NOT LOGGED IN");

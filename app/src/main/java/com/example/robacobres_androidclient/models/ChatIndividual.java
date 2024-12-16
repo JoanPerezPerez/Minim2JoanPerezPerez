@@ -2,32 +2,32 @@ package com.example.robacobres_androidclient.models;
 
 
 public class ChatIndividual {
-    String participantes;
-    String name;
+    String nameFrom;
+    String nameTo;
     String comentario;
 
     public ChatIndividual(){}
 
-    public ChatIndividual(String participante1, String participante2, String name, String comentario) {
-        this.participantes = participante1 +","+participante2;
-        this.name = name;
+    public ChatIndividual(String nameFrom, String nameTo, String comentario) {
+        this.nameFrom = nameFrom;
+        this.nameTo = nameTo;
         this.comentario = comentario;
     }
 
-    public String getParticipantes() {
-        return participantes;
+    public String getNameFrom() {
+        return nameFrom;
     }
 
-    public void setParticipantes(String participantes) {
-        this.participantes = participantes;
+    public void setNameFrom(String nameFrom) {
+        this.nameFrom = nameFrom;
     }
 
-    public String getName() {
-        return name;
+    public String getNameTo() {
+        return nameTo;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameTo(String nameTo) {
+        this.nameTo = nameTo;
     }
 
     public String getComentario() {

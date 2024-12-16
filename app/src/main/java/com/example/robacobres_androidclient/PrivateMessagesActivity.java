@@ -101,10 +101,11 @@ public class PrivateMessagesActivity extends AppCompatActivity implements Privat
     public void onPrivateCallbackMessages(List<ChatIndividual> lista){
         adapter1.setPrivateMessages(lista);
         adapter1.notifyDataSetChanged();
+        textEnviar.setText("");
     }
 
     public void onClickSend1(View view) {
-        serviceREST.postPrivateMessage(this, new ChatIndividual(userName,selectedOption,userName,textEnviar.getText().toString()));
+        serviceREST.postPrivateMessage(this, new ChatIndividual(userName,selectedOption,textEnviar.getText().toString()));
     }
 
     public void onClickBotonRetroceder(View view){

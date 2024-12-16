@@ -41,7 +41,7 @@ public class MyChatIndividualAdapter extends RecyclerView.Adapter<MyChatIndividu
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChatIndividual chatIndividual1 = chatIndividual.get(position); // Obté l'element en funció de la posició
-        holder.userName.setText(chatIndividual1.getName());
+        holder.userName.setText(chatIndividual1.getNameFrom());
         holder.comentario.setText(chatIndividual1.getComentario());
     }
 
