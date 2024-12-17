@@ -20,87 +20,87 @@ import retrofit2.http.Path;
 public interface ServidorBBDD {
     //SERVICE USERS
     //register user
-    @POST("usersBBDD/register") //OK
+    @POST("users/register") //OK
     Call<User> registerUser(@Body User user);
 
-    @GET("usersBBDD/GetCode")
+    @GET("users/GetCode")
     Call<Void> getCode();
 
     //change correo user
-    @PUT("usersBBDD/ChangeMail/{NewCorreo}/{code}")
+    @PUT("users/ChangeMail/{NewCorreo}/{code}")
     Call<Void> UserChangeCorreo(@Path("NewCorreo") String NewCorreo,@Path("code") String code);
     //login user
-    @POST("usersBBDD/login") //OK
+    @POST("users/login") //OK
     Call<Void> loginUser(@Body User user);
 
     //delete user
-    @DELETE("usersBBDD/deleteUser") //OK
+    @DELETE("users/deleteUser") //OK
     Call<Void> deleteUser();
 
     //recover password user
-    @GET("usersBBDD/RecoverPassword/{UserName}")
+    @GET("users/RecoverPassword/{UserName}")
     Call<Void> RecoverPassword(@Path("UserName") String username);
 
     //change password user
-    @PUT("usersBBDD/ChangePassword")
+    @PUT("users/ChangePassword")
     Call<Void> UserChangePassword(@Body ChangePassword passwords);
 
     //SERVICE ITEMS
     //get all items
-    @GET("itemsBBDD")
+    @GET("items")
     Call<List<Item>> getItems();
 
-    @GET("storeBBDD/Items")
+    @GET("store/Items")
     Call<List<Item>> getMyItems();
 
     //get a specific item
-    @GET("itemsBBDD/{ItemName}") //ARREGLAR
+    @GET("items/{ItemName}") //ARREGLAR
     Call<Item> getItem(@Path("ItemName") String ItemName);
 
-    @GET("usersBBDD/sessionCheck")
+    @GET("users/sessionCheck")
     Call<Void> getSession();
 
-    @GET("usersBBDD/sessionOut")
+    @GET("users/sessionOut")
     Call<Void> quitSession();
 
-    @GET("usersBBDD/GetMultiplicadorForCobre")
+    @GET("users/GetMultiplicadorForCobre")
     Call<String> UserGetsMultiplicador();
 
-    @GET("usersBBDD/stats")
+    @GET("users/stats")
     Call<User> GetStatsUser();
 
     //GetUser
-    @POST("usersBBDD/stats") //OK
+    @POST("users/stats") //OK
     Call<User> getUser();
 
-    @POST("usersBBDD/sellCobre/{KilosCobre}")
+    @POST("users/sellCobre/{KilosCobre}")
     Call<User> UserSellsCobre(@Path("KilosCobre") Double kiloscobre);
 
-    @POST("storeBBDD/buyItem/{itemName}")
+    @POST("store/buyItem/{itemName}")
     Call<List<Item>> userBuysItem(@Path("itemName") String itemName);
 
-    @POST("storeBBDD/buyCharacters/{CharacterName}")
+    @POST("store/buyCharacters/{CharacterName}")
     Call<List<GameCharacter>> userBuysCharacter(@Path("CharacterName") String CharacterName);
 
-    @POST("usersBBDD/GetForum") //OK
+    @POST("users/GetForum") //OK
     Call<List<Forum>> getForum();
 
-    @POST("usersBBDD/PostInForum") //OK
+    @POST("users/PostInForum") //OK
     Call<List<Forum>> PostInForum(@Body Forum forum);
 
-    @POST("usersBBDD/PrivateNames") //OK
+    @POST("users/PrivateNames") //OK
     Call<List<User>> getPrivateNames();
 
-    @POST("usersBBDD/PrivateMessagesWith/{name}") //OK
+    @POST("users/PrivateMessagesWith/{name}") //OK
     Call<List<ChatIndividual>> getPrivateMessagesWith(@Path("name") String name);
 
-    @POST("usersBBDD/PrivateChat/Post") //OK
+    @POST("users/PrivateChat/Post") //OK
     Call<List<ChatIndividual>> postPrivateMessage(@Body ChatIndividual chatIndividual);
 
-    @GET("storeBBDD/ItemsUserCanBuy") //ARREGLAR
+    @GET("store/ItemsUserCanBuy") //ARREGLAR
     Call<List<Item>> getItemssUserCanBuy();
 
-    @GET("storeBBDD/CharactersUserCanBuy") //ARREGLAR
+    @GET("store/CharactersUserCanBuy") //ARREGLAR
     Call<List<GameCharacter>> getCharactersUserCanBuy();
 
 

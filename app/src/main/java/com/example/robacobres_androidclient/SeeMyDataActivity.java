@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,8 @@ public class SeeMyDataActivity extends AppCompatActivity {
     EditText userCorreo;
     EditText userCobre;
     EditText userMoney;
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class SeeMyDataActivity extends AppCompatActivity {
         context=SeeMyDataActivity.this;
         service = ServiceBBDD.getInstance(context);
         user = (User) getIntent().getSerializableExtra("userInfo");
+        progressBar = findViewById(R.id.progressBar);
 
         userName=findViewById(R.id.NameText);
         userCorreo=findViewById(R.id.CorreoText);
