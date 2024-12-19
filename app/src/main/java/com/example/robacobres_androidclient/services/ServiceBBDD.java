@@ -2,10 +2,13 @@ package com.example.robacobres_androidclient.services;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.robacobres_androidclient.DenunciarActivity;
 import com.example.robacobres_androidclient.callbacks.AuthCallback;
 import com.example.robacobres_androidclient.callbacks.CharacterCallback;
 import com.example.robacobres_androidclient.callbacks.ChargeDataCallback;
+import com.example.robacobres_androidclient.callbacks.DenunciarCallBack;
 import com.example.robacobres_androidclient.callbacks.ForumCallback;
 import com.example.robacobres_androidclient.callbacks.ItemCallback;
 import com.example.robacobres_androidclient.callbacks.PrivateCallback;
@@ -14,6 +17,7 @@ import com.example.robacobres_androidclient.interceptors.AddCookiesInterceptor;
 import com.example.robacobres_androidclient.interceptors.ReceivedCookiesInterceptor;
 import com.example.robacobres_androidclient.models.ChangePassword;
 import com.example.robacobres_androidclient.models.ChatIndividual;
+import com.example.robacobres_androidclient.models.Denunciar;
 import com.example.robacobres_androidclient.models.Forum;
 import com.example.robacobres_androidclient.models.GameCharacter;
 import com.example.robacobres_androidclient.models.Item;
@@ -765,6 +769,34 @@ public class ServiceBBDD {
             public void onFailure(Call<List<ChatIndividual>> call, Throwable t) {
                 Log.e("API_ERROR", "API call failed", t);
             }
+        });
+    }
+    public void postDenuncia(Denunciar denuncia_, final DenunciarCallBack denunciarCallBack) {
+        String message = denuncia_.getDescription();
+        Call<Void> call = serv.postDenuncia(message);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 201) {
+                    denunciarCallBack.onMessage("denuncia enviada correctament");
+                    Log.d("API_RESPONSE", "GET SUCCESSFUL");
+                } else if (response.code() == 502) {
+                    denunciarCallBack.onMessage("No Forum Messages");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                } else if (response.code() == 506) {
+                    denunciarCallBack.onMessage("USER NOT LOGGED IN");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                } else {
+                    denunciarCallBack.onMessage("ERROR");
+                    Log.d("API_RESPONSE", "Response not successful, code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+
         });
     }
 

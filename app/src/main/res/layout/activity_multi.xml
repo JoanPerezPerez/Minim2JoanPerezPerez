@@ -87,8 +87,8 @@
 
     <Button
         android:id="@+id/Button_Mispersonajes"
-        android:layout_width="115dp"
-        android:layout_height="115dp"
+        android:layout_width="116dp"
+        android:layout_height="95dp"
         android:layout_below="@id/Button_play"
         android:layout_marginStart="60dp"
         android:layout_marginTop="50dp"
@@ -101,12 +101,12 @@
 
     <Button
         android:id="@+id/Button_VenderCobre"
-        android:layout_width="115dp"
-        android:layout_height="115dp"
+        android:layout_width="wrap_content"
+        android:layout_height="93dp"
         android:layout_below="@id/Button_misobjetos"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="54dp"
         android:background="@drawable/button_gradient"
         android:fontFamily="fantasy"
         android:onClick="onClickVenderCobre"
@@ -116,8 +116,8 @@
 
     <Button
         android:id="@+id/Button_VerMisDatos"
-        android:layout_width="115dp"
-        android:layout_height="115dp"
+        android:layout_width="wrap_content"
+        android:layout_height="62dp"
         android:layout_below="@id/Button_Mispersonajes"
         android:layout_marginStart="60dp"
         android:layout_marginTop="50dp"
@@ -130,8 +130,8 @@
 
     <Button
         android:id="@+id/Button_eliminarcuenta"
-        android:layout_width="115dp"
-        android:layout_height="115dp"
+        android:layout_width="117dp"
+        android:layout_height="60dp"
         android:layout_below="@id/Button_VenderCobre"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="50dp"
@@ -163,6 +163,8 @@
         android:layout_width="87dp"
         android:layout_height="70dp"
         android:layout_alignBottom="@+id/Button_tienda"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="34dp"
         android:layout_marginEnd="149dp"
         android:layout_marginBottom="-4dp"
         android:layout_toStartOf="@+id/Button_tienda"
@@ -181,6 +183,19 @@
         android:layout_marginBottom="1dp"
         android:text="Private"
         android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/Denunciar"
+        android:layout_width="202dp"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="104dp"
+        android:layout_marginEnd="105dp"
+        android:layout_marginBottom="101dp"
+        android:onClick="onClickDenunciar"
+        android:text="Denunciar" />
 
 </RelativeLayout>
 

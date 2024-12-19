@@ -27,7 +27,7 @@
         android:layout_alignParentEnd="true"
         android:background="@android:drawable/ic_menu_close_clear_cancel"
         android:backgroundTint="#070707"
-        android:onClick="onClickBotonRetroceder"
+        android:onClick="onClickBotonExit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

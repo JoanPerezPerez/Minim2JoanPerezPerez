@@ -158,7 +158,11 @@ public class MultiActivity extends AppCompatActivity implements AuthCallback, Us
         serviceREST.getPrivateNames(this);
 
     }
-
+    public void onClickDenunciar(View V){
+        Intent intent = new Intent(context, DenunciarActivity.class);
+        intent.putExtra("userName", userName);
+        context.startActivity(intent);
+    }
     @Override
     public void onDeleteUser(){
         Intent intent = new Intent(context, LogInActivity.class);
